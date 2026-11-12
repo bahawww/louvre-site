@@ -2,6 +2,7 @@
 import { apps, type Lang } from '../data/apps';
 import { ui } from '../data/i18n';
 import PulseMock from './PulseMock.astro';
+import AppIcon from './AppIcon.astro';
 import '../styles/site.css';
 
 interface Props { lang: Lang }
@@ -10,6 +11,7 @@ const t = ui[lang];
 const other: Lang = lang === 'id' ? 'en' : 'id';
 const site = 'https://louvre.my.id';
 const github = 'https://github.com/bahawww';
+const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -93,6 +95,15 @@ const github = 'https://github.com/bahawww';
         <p class="stage-note">{t.sample}</p>
       </div>
 
+      <nav class="strip wrap up" style="--i:4" aria-label={t.apps}>
+        {apps.map((a) => (
+          <a href={`#${a.id}`} class="strip-item">
+            <span class={`app-icon sm ic-${a.icon}`} aria-hidden="true"><AppIcon icon={a.icon} /></span>
+            <span><strong>{a.name}</strong><small>{a.tagline[lang]}</small></span>
+          </a>
+        ))}
+      </nav>
+
       <section id="koleksi" class="koleksi wrap" aria-labelledby="koleksi-h">
         <div class="sec-head rv">
           <h2 id="koleksi-h">{t.collection}</h2>
@@ -102,22 +113,14 @@ const github = 'https://github.com/bahawww';
           <article id={a.id} class={`app ${i % 2 ? 'flip' : ''}`} aria-labelledby={`a-${a.id}`}>
             <div class="app-text">
               <span class={`app-icon rv ic-${a.icon}`} aria-hidden="true">
-                {a.icon === 'pulse' ? (
-                  <svg class="pl" viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>
-                ) : (
-                  <>
-                    <img class="only-dark" src="/img/symbol-white.svg" alt="" width="24" height="24" />
-                    <img class="only-light" src="/img/symbol-ink.svg" alt="" width="24" height="24" />
-                  </>
-                )}
+                <AppIcon icon={a.icon} />
               </span>
               <h3 id={`a-${a.id}`} class="rv">{a.name}</h3>
               <p class="app-tag rv">{a.tagline[lang]}</p>
               <p class="app-body rv">{a.body[lang]}</p>
               <dl class="facts rv">
                 <div><dt>{t.access}</dt><dd><span class={`dot ${a.access === 'public' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'public' ? t.public : t.login}</dd></div>
-                <div><dt>{t.since}</dt><dd>{a.year}</dd></div>
-                <div><dt>{t.address}</dt><dd>{a.host}</dd></div>
+                <div><dt>{t.stack}</dt><dd>{a.stack}</dd></div>
               </dl>
               {a.access === 'login' ? (
                 <div class="more-row rv">
@@ -148,7 +151,10 @@ const github = 'https://github.com/bahawww';
       <section class="close wrap" aria-labelledby="close-h">
         <h2 id="close-h" class="rv">{t.closeH}</h2>
         <p class="lead rv">{t.closeP}</p>
-        <a class="btn rv" href={github}>github.com/bahawww</a>
+        <div class="actions rv">
+          <a class="btn" href={github}>{t.follow}</a>
+          <a class="btn btn-ghost" href={ideaUrl}>{t.idea}</a>
+        </div>
       </section>
     </main>
 
