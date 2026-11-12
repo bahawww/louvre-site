@@ -1,0 +1,141 @@
+---
+// Tampilan CONTOH Pulse, digambar dengan HTML. Bukan tangkapan layar asli:
+// semua nama host, IP, layanan, dan angka adalah data contoh yang disamarkan.
+// Ukuran memakai em dan mengikuti lebar wadah (cqw), jadi berskala seperti gambar.
+import type { Lang } from '../data/apps';
+interface Props { lang: Lang; view: 'overview' | 'terminal' }
+const { lang, view } = Astro.props;
+
+const L = {
+  id: {
+    label: view === 'overview' ? 'Tampilan contoh dasbor Pulse dengan data yang disamarkan' : 'Tampilan contoh terminal Pulse dengan data yang disamarkan',
+    groups: [
+      { name: 'Pantau', items: ['Ringkasan', 'Tren', 'Perangkat keras', 'Kapasitas'] },
+      { name: 'Layanan', items: ['Aplikasi', 'Kendali', 'Agen'] },
+      { name: 'Admin', items: ['Log', 'Pengguna'] },
+    ],
+    title: 'Ringkasan', healthy: 'Sehat', uptime: 'Menyala 41 hari',
+    tiles: [
+      { k: 'CPU', v: '23%', s: '16 inti · beban 1,82', p: 23 },
+      { k: 'Memori', v: '6,1 GB', s: 'dari 16 GB', p: 38 },
+      { k: 'Disk', v: '188 GB', s: 'dari 500 GB', p: 37 },
+      { k: 'Jaringan', v: '1,2 MB/d', s: 'turun · 0,3 MB/d naik', p: 18 },
+    ],
+    chart: 'CPU, 1 jam terakhir', now: 'sekarang', ago: '60 menit lalu',
+    services: 'Layanan', running: 'Jalan', restarting: 'Mulai ulang', stopped: 'Berhenti',
+    logs: 'Log terbaru',
+    logLines: ['permintaan selesai dalam 42 md', 'cadangan harian selesai', 'sertifikat diperbarui', 'pengguna •••••• masuk'],
+    term: { shell: 'shell', agent: 'agen', split: 'Bagi', active: 'aktif (jalan) sejak 41 hari', used: 'Terpakai', avail: 'Sisa',
+      a1: 'Memeriksa log layanan app-02…', a2: 'Menemukan 3 peringatan, 0 galat.', a3: 'Menulis ringkasan ke catatan.', a4: 'Selesai. Menunggu perintah.' },
+  },
+  en: {
+    label: view === 'overview' ? 'Sample view of the Pulse dashboard with masked data' : 'Sample view of the Pulse terminal with masked data',
+    groups: [
+      { name: 'Monitor', items: ['Overview', 'Trends', 'Hardware', 'Capacity'] },
+      { name: 'Services', items: ['Applications', 'Control', 'Agents'] },
+      { name: 'Admin', items: ['Logs', 'Users'] },
+    ],
+    title: 'Overview', healthy: 'Healthy', uptime: 'Up 41 days',
+    tiles: [
+      { k: 'CPU', v: '23%', s: '16 cores · load 1.82', p: 23 },
+      { k: 'Memory', v: '6.1 GB', s: 'of 16 GB', p: 38 },
+      { k: 'Disk', v: '188 GB', s: 'of 500 GB', p: 37 },
+      { k: 'Network', v: '1.2 MB/s', s: 'down · 0.3 MB/s up', p: 18 },
+    ],
+    chart: 'CPU, last hour', now: 'now', ago: '60 min ago',
+    services: 'Services', running: 'Running', restarting: 'Restarting', stopped: 'Stopped',
+    logs: 'Recent logs',
+    logLines: ['request finished in 42 ms', 'daily backup finished', 'certificate renewed', 'user •••••• signed in'],
+    term: { shell: 'shell', agent: 'agent', split: 'Split', active: 'active (running) since 41 days', used: 'Used', avail: 'Avail',
+      a1: 'Checking logs for service app-02…', a2: 'Found 3 warnings, 0 errors.', a3: 'Writing a summary to notes.', a4: 'Done. Waiting for a command.' },
+  },
+}[lang];
+
+const svc = [
+  { n: 'app-01', s: 'running' }, { n: 'app-02', s: 'running' }, { n: 'db-••••', s: 'running' },
+  { n: 'proxy-••', s: 'restarting' }, { n: 'worker-••', s: 'running' }, { n: 'cron-••', s: 'stopped' },
+] as const;
+const times = ['14:02:11', '14:01:58', '14:01:30', '14:00:47'];
+const pts = [38, 34, 41, 36, 30, 33, 27, 31, 24, 29, 35, 26, 22, 28, 20, 25, 31, 23, 27, 21, 24];
+const line = pts.map((y, i) => `${(i * 100) / (pts.length - 1)},${y}`).join(' ');
+const host = 'srv-••••';
+---
+<div class="ui-wrap">
+  <div class={`ui ui-${view}`} data-ui role="img" aria-label={L.label}>
+    {view === 'overview' ? (
+      <>
+        <div class="ui-side" aria-hidden="true">
+          <div class="ui-brand">
+            <svg viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>
+            Pulse
+          </div>
+          {L.groups.map((g, gi) => (
+            <div class="ui-group">
+              <p>{g.name}</p>
+              {g.items.map((it, ii) => <span class={gi === 0 && ii === 0 ? 'on' : ''}>{it}</span>)}
+            </div>
+          ))}
+        </div>
+        <div class="ui-main" aria-hidden="true">
+          <div class="ui-head">
+            <b>{L.title}</b>
+            <span class="ui-chip">{host} · 10.••.••.•••</span>
+            <span class="ui-chip"><i class="ui-dot ok"></i>{L.healthy} · {L.uptime}</span>
+          </div>
+          <div class="ui-tiles">
+            {L.tiles.map((x) => (
+              <div class="ui-card">
+                <small>{x.k}</small>
+                <b>{x.v}</b>
+                <small>{x.s}</small>
+                <span class="ui-bar"><i style={`width:${x.p}%`}></i></span>
+              </div>
+            ))}
+          </div>
+          <div class="ui-row">
+            <div class="ui-card ui-chart">
+              <small>{L.chart}</small>
+              <svg viewBox="0 0 100 48" preserveAspectRatio="none"><polygon points={`0,48 ${line} 100,48`} class="ui-area" /><polyline points={line} class="ui-line" vector-effect="non-scaling-stroke" /></svg>
+              <div class="ui-axis"><small>{L.ago}</small><small>{L.now}</small></div>
+            </div>
+            <div class="ui-card">
+              <small>{L.services}</small>
+              <ul class="ui-list">
+                {svc.map((x) => (
+                  <li><i class={`ui-dot ${x.s === 'running' ? 'ok' : x.s === 'restarting' ? 'warn' : 'off'}`}></i><span>{x.n}</span><em>{L[x.s]}</em></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div class="ui-card ui-logs">
+            <small>{L.logs}</small>
+            {L.logLines.map((x, i) => <p><time>{times[i]}</time><span>{svc[i].n}</span>{x}</p>)}
+          </div>
+        </div>
+      </>
+    ) : (
+      <div class="ui-term" aria-hidden="true">
+        <div class="ui-tabs">
+          <span class="on">{L.term.shell} 1</span><span>{L.term.shell} 2</span><span>{L.term.agent}</span>
+          <span class="ui-chip">{L.term.split}</span>
+        </div>
+        <div class="ui-panes">
+          <pre><u>ops@{host}</u>:~$ systemctl status app-01
+<i class="ui-dot ok"></i> app-01.service
+   {L.term.active}
+   PID ••••• · 212.4M
+
+<u>ops@{host}</u>:~$ df -h /
+/dev/••••   500G  {L.term.used} 188G  {L.term.avail} 312G
+
+<u>ops@{host}</u>:~$ <s></s></pre>
+          <pre><u>{L.term.agent}</u> › {L.term.a1}
+<u>{L.term.agent}</u> › {L.term.a2}
+<u>{L.term.agent}</u> › {L.term.a3}
+
+<i class="ui-dot ok"></i> {L.term.a4}</pre>
+        </div>
+      </div>
+    )}
+  </div>
+</div>

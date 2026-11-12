@@ -1,6 +1,7 @@
 ---
 import { apps, type Lang } from '../data/apps';
 import { ui } from '../data/i18n';
+import PulseMock from './PulseMock.astro';
 import '../styles/site.css';
 
 interface Props { lang: Lang }
@@ -89,11 +90,11 @@ const github = 'https://github.com/bahawww';
         <div class="window" data-tilt>
           <div class="chrome" aria-hidden="true">
             <span class="dots"><i></i><i></i><i></i></span>
-            <span class="url">logo.louvre.my.id</span>
+            <span class="url"><svg class="pl" viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>pulse.louvre.my.id</span>
           </div>
-          <img class="only-dark" src="/img/shot-logo-hero.webp" alt={t.heroAlt} width="2880" height="1800" fetchpriority="high" />
-          <img class="only-light" src="/img/shot-logo-hero-light.webp" alt={t.heroAlt} width="2880" height="1800" />
+          <PulseMock lang={lang} view="overview" />
         </div>
+        <p class="stage-note">{t.mockNote}</p>
       </div>
 
       <section id="koleksi" class="koleksi wrap" aria-labelledby="koleksi-h">
@@ -105,7 +106,16 @@ const github = 'https://github.com/bahawww';
         {apps.map((a, i) => (
           <article id={a.id} class={`app ${i % 2 ? 'flip' : ''}`} aria-labelledby={`a-${a.id}`}>
             <div class="app-text">
-              <span class="app-icon rv" aria-hidden="true">{a.name.slice(0, 1)}</span>
+              <span class={`app-icon rv ic-${a.icon}`} aria-hidden="true">
+                {a.icon === 'pulse' ? (
+                  <svg class="pl" viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>
+                ) : (
+                  <>
+                    <img class="only-dark" src="/img/symbol-white.svg" alt="" width="24" height="24" />
+                    <img class="only-light" src="/img/symbol-ink.svg" alt="" width="24" height="24" />
+                  </>
+                )}
+              </span>
               <h3 id={`a-${a.id}`} class="rv">{a.name}</h3>
               <p class="app-tag rv">{a.tagline[lang]}</p>
               <p class="app-body rv">{a.body[lang]}</p>
@@ -117,14 +127,14 @@ const github = 'https://github.com/bahawww';
               </dl>
               <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
             </div>
-            <figure class="app-shot rv">
-              {a.image.light ? (
+            <figure class={`app-shot rv ${a.image ? '' : 'has-mock'}`}>
+              {a.image ? (
                 <>
-                  <img class="only-dark" src={a.image.dark} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
-                  <img class="only-light" src={a.image.light} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
+                  <img class="only-dark" src={a.image.src[lang].dark} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
+                  <img class="only-light" src={a.image.src[lang].light} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
                 </>
               ) : (
-                <img src={a.image.dark} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
+                <PulseMock lang={lang} view="terminal" />
               )}
             </figure>
             <ul class="caps">

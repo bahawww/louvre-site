@@ -12,12 +12,44 @@ export type App = {
   access: 'public' | 'login';
   tagline: T;
   body: T;
-  // Gambar utama panel. `light` opsional: dipakai saat tema terang.
-  image: { dark: string; light?: string; width: number; height: number; alt: T };
+  icon: 'pulse' | 'louvre';
+  // Gambar panel per bahasa dan tema. Tanpa `image`, panel memakai tampilan contoh (`mock`).
+  image?: { src: Record<Lang, { dark: string; light: string }>; width: number; height: number; alt: T };
+  mock?: 'pulse-terminal';
   caps: { title: T; text: T }[];
 };
 
 export const apps: App[] = [
+  {
+    id: 'pulse',
+    name: 'Pulse',
+    year: '2026',
+    stack: 'React, Express, MySQL',
+    url: 'https://pulse.louvre.my.id/',
+    host: 'pulse.louvre.my.id',
+    access: 'login',
+    icon: 'pulse',
+    tagline: { id: 'Dasbor server pribadi', en: 'A personal server dashboard' },
+    body: {
+      id: 'Metrik live, log, terminal di browser, dan agen AI untuk satu mesin Linux. Dikunci di balik login karena memegang kendali mesin.',
+      en: 'Live metrics, logs, a terminal in the browser, and AI agents for one Linux machine. It sits behind a login because it controls the machine.',
+    },
+    mock: 'pulse-terminal',
+    caps: [
+      {
+        title: { id: 'Metrik live', en: 'Live metrics' },
+        text: { id: 'CPU, memori, disk, jaringan, dan layanan, diperbarui terus.', en: 'CPU, memory, disk, network, and services, updated continuously.' },
+      },
+      {
+        title: { id: 'Terminal di browser', en: 'Terminal in the browser' },
+        text: { id: 'Shell penuh dengan tampilan terbagi, juga nyaman dipakai dari ponsel.', en: 'A full shell with split view that also works well from a phone.' },
+      },
+      {
+        title: { id: 'Agen AI', en: 'AI agents' },
+        text: { id: 'Jalankan dan pantau agen coding langsung dari dasbor.', en: 'Start and watch coding agents straight from the dashboard.' },
+      },
+    ],
+  },
   {
     id: 'logo',
     name: 'Logo',
@@ -26,14 +58,17 @@ export const apps: App[] = [
     url: 'https://logo.louvre.my.id/',
     host: 'logo.louvre.my.id',
     access: 'public',
+    icon: 'louvre',
     tagline: { id: 'Identitas visual Louvre', en: 'The Louvre visual identity' },
     body: {
       id: 'Piramida kaca dari sembilan segitiga, lockup, font, mockup, dan paket unduhan. Semua pedoman pemakaian ada di satu situs.',
       en: 'A glass pyramid made of nine triangles, with lockups, the typeface, mockups, and a download pack. Every usage guideline lives on one site.',
     },
     image: {
-      dark: '/img/shot-logo-ekspor.webp',
-      light: '/img/shot-logo-ekspor-light.webp',
+      src: {
+        id: { dark: '/img/shot-logo-ekspor-id.webp', light: '/img/shot-logo-ekspor-id-light.webp' },
+        en: { dark: '/img/shot-logo-ekspor-en.webp', light: '/img/shot-logo-ekspor-en-light.webp' },
+      },
       width: 2280,
       height: 1425,
       alt: {
@@ -53,40 +88,6 @@ export const apps: App[] = [
       {
         title: { id: 'Delapan mockup', en: 'Eight mockups' },
         text: { id: 'Kaos, mug, tote, kartu nama, sampai dasbor web, siap diunduh.', en: 'T-shirt, mug, tote, business card, and a web dashboard, ready to download.' },
-      },
-    ],
-  },
-  {
-    id: 'pulse',
-    name: 'Pulse',
-    year: '2026',
-    stack: 'React, Express, MySQL',
-    url: 'https://pulse.louvre.my.id/',
-    host: 'pulse.louvre.my.id',
-    access: 'login',
-    tagline: { id: 'Dasbor server pribadi', en: 'A personal server dashboard' },
-    body: {
-      id: 'Metrik live, log, terminal di browser, dan agen AI untuk satu mesin Linux. Dikunci di balik login karena memegang kendali mesin.',
-      en: 'Live metrics, logs, a terminal in the browser, and AI agents for one Linux machine. It sits behind a login because it controls the machine.',
-    },
-    image: {
-      dark: '/img/pulse-login.webp',
-      width: 1600,
-      height: 1000,
-      alt: { id: 'Halaman masuk Pulse', en: 'The Pulse sign-in page' },
-    },
-    caps: [
-      {
-        title: { id: 'Metrik live', en: 'Live metrics' },
-        text: { id: 'CPU, memori, disk, jaringan, dan layanan, diperbarui terus.', en: 'CPU, memory, disk, network, and services, updated continuously.' },
-      },
-      {
-        title: { id: 'Terminal di browser', en: 'Terminal in the browser' },
-        text: { id: 'Shell penuh dengan tampilan terbagi, juga nyaman dipakai dari ponsel.', en: 'A full shell with split view that also works well from a phone.' },
-      },
-      {
-        title: { id: 'Agen AI', en: 'AI agents' },
-        text: { id: 'Jalankan dan pantau agen coding langsung dari dasbor.', en: 'Start and watch coding agents straight from the dashboard.' },
       },
     ],
   },
