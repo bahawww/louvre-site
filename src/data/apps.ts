@@ -66,8 +66,8 @@ export const apps: App[] = [
         id: { dark: '/img/shot-logo-ekspor-id.webp', light: '/img/shot-logo-ekspor-id-light.webp' },
         en: { dark: '/img/shot-logo-ekspor-en.webp', light: '/img/shot-logo-ekspor-en-light.webp' },
       },
-      width: 2280,
-      height: 1425,
+      width: 1440,
+      height: 900,
       alt: {
         id: 'Panel ekspor di logo.louvre.my.id: pilih versi, lebar, latar, dan format, dengan pratinjau simbol',
         en: 'The export panel on logo.louvre.my.id: pick a version, width, background, and format, with a preview of the symbol',

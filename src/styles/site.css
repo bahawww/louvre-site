@@ -250,6 +250,8 @@ html.js .window { --t: 1; }
   border: 1px solid var(--line); border-radius: calc(var(--r) + 4px);
   background: var(--panel); overflow: hidden;
   transition: border-color 0.3s;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 .app:hover { border-color: var(--line-2); }
 .sec-head + .app { margin-top: clamp(32px, 4vw, 56px); }
