@@ -159,32 +159,19 @@ const github = 'https://github.com/bahawww';
         var d = document.documentElement;
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        var btn = document.querySelector('.theme');
-        if (btn) btn.addEventListener('click', function () {
-          var n = d.dataset.theme === 'light' ? 'dark' : 'light';
-          d.dataset.theme = n;
-          try { localStorage.setItem('louvre-theme', n); } catch (e) {}
-        });
+        // Pulihkan posisi scroll jika pindah bahasa lewat reload penuh
+        var savedY = null;
+        try {
+          savedY = sessionStorage.getItem('louvre-scroll');
+          if (savedY !== null) sessionStorage.removeItem('louvre-scroll');
+        } catch (e) {}
 
-        // Scroll ke bagian halaman tanpa memunculkan #hash di address bar
-        document.addEventListener('click', function (ev) {
-          var a = ev.target.closest && ev.target.closest('a[href^="#"]');
-          if (!a) return;
-          var id = a.getAttribute('href').slice(1);
-          var t = id ? document.getElementById(id) : null;
-          if (!t && id !== 'judul') return;
-          ev.preventDefault();
-          var beh = reduce ? 'auto' : 'smooth';
-          if (id === 'judul') window.scrollTo({ top: 0, behavior: beh });
-          else t.scrollIntoView({ behavior: beh });
-          if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-        });
-        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
-
-        var els = document.querySelectorAll('.rv');
-        if (reduce || !('IntersectionObserver' in window)) {
-          els.forEach(function (e) { e.classList.add('in'); });
-        } else {
+        function observeRv() {
+          var els = document.querySelectorAll('.rv:not(.in)');
+          if (reduce || savedY !== null || !('IntersectionObserver' in window)) {
+            els.forEach(function (e) { e.classList.add('in'); });
+            return;
+          }
           var io = new IntersectionObserver(function (es) {
             es.forEach(function (en) {
               if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
@@ -199,21 +186,90 @@ const github = 'https://github.com/bahawww';
           });
         }
 
-        var top = document.querySelector('.top');
-        window.addEventListener('scroll', function () { top.classList.toggle('scrolled', window.scrollY > 8); }, { passive: true });
-
-        // jendela produk: miring di awal, rata saat di-scroll
-        var w = document.querySelector('[data-tilt]');
-        if (!w || reduce) return;
-        var ticking = false;
-        function upd() {
+        function syncScroll() {
+          var top = document.querySelector('.top');
+          if (top) top.classList.toggle('scrolled', window.scrollY > 8);
+          var w = document.querySelector('[data-tilt]');
+          if (!w || reduce) return;
           var r = w.getBoundingClientRect();
           var p = Math.min(1, Math.max(0, 1 - (r.top - window.innerHeight * 0.25) / (window.innerHeight * 0.6)));
           w.style.setProperty('--t', (1 - p).toFixed(3));
-          ticking = false;
         }
-        window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
-        upd();
+
+        function swapLang(url, push) {
+          var y = window.scrollY;
+          fetch(url).then(function (r) {
+            if (!r.ok) throw new Error();
+            return r.text();
+          }).then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            d.lang = doc.documentElement.lang;
+            document.title = doc.title;
+            doc.querySelectorAll('.rv').forEach(function (e) { e.classList.add('in'); });
+            doc.querySelectorAll('.up').forEach(function (e) { e.style.animation = 'none'; });
+            ['header', 'main', 'footer'].forEach(function (tag) {
+              var cur = document.querySelector(tag), nxt = doc.querySelector(tag);
+              if (cur && nxt) cur.replaceWith(nxt);
+            });
+            if (push) history.pushState(null, '', url);
+            window.scrollTo({ top: y, behavior: 'instant' });
+            syncScroll();
+          }).catch(function () {
+            try { sessionStorage.setItem('louvre-scroll', String(y)); } catch (e) {}
+            location.href = url;
+          });
+        }
+
+        document.addEventListener('click', function (ev) {
+          var tBtn = ev.target.closest && ev.target.closest('.theme');
+          if (tBtn) {
+            var n = d.dataset.theme === 'light' ? 'dark' : 'light';
+            d.dataset.theme = n;
+            try { localStorage.setItem('louvre-theme', n); } catch (e) {}
+            return;
+          }
+
+          var langA = ev.target.closest && ev.target.closest('a[hreflang]');
+          if (langA) {
+            var href = langA.getAttribute('href');
+            if (href) {
+              ev.preventDefault();
+              if (href !== location.pathname) swapLang(href, true);
+              return;
+            }
+          }
+
+          var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+          if (!a) return;
+          var id = a.getAttribute('href').slice(1);
+          var t = id ? document.getElementById(id) : null;
+          if (!t && id !== 'judul') return;
+          ev.preventDefault();
+          var beh = reduce ? 'auto' : 'smooth';
+          if (id === 'judul') window.scrollTo({ top: 0, behavior: beh });
+          else t.scrollIntoView({ behavior: beh });
+          if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+        });
+
+        window.addEventListener('popstate', function () {
+          swapLang(location.pathname, false);
+        });
+
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+        observeRv();
+        if (savedY !== null) {
+          window.scrollTo({ top: parseFloat(savedY) || 0, behavior: 'instant' });
+          savedY = null;
+        }
+
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(function () { syncScroll(); ticking = false; });
+          }
+        }, { passive: true });
+        syncScroll();
       })();
     </script>
   </body>
