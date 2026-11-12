@@ -60,6 +60,10 @@
   }
 }
 
+/* ganti tema: lingkaran dari JS, matikan crossfade bawaan supaya tepinya tegas */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { z-index: 2; }
+
 /* gambar per tema */
 .only-light { display: none; }
 :root[data-theme='light'] .only-light { display: block; }

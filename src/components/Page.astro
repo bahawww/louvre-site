@@ -269,8 +269,22 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           var tBtn = ev.target.closest && ev.target.closest('.theme');
           if (tBtn) {
             var n = d.dataset.theme === 'light' ? 'dark' : 'light';
-            d.dataset.theme = n;
-            try { localStorage.setItem('louvre-theme', n); } catch (e) {}
+            var apply = function () {
+              d.dataset.theme = n;
+              try { localStorage.setItem('louvre-theme', n); } catch (e) {}
+            };
+            // Tema baru melebar sebagai lingkaran dari tombol (View Transitions);
+            // browser lama atau reduced motion: ganti langsung.
+            if (reduce || !document.startViewTransition) { apply(); return; }
+            var r = tBtn.getBoundingClientRect();
+            var x = r.left + r.width / 2, y = r.top + r.height / 2;
+            var rad = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+            document.startViewTransition(apply).ready.then(function () {
+              d.animate(
+                { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + rad + 'px at ' + x + 'px ' + y + 'px)'] },
+                { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' }
+              );
+            });
             return;
           }
 
