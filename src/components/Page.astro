@@ -241,6 +241,24 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           w.style.setProperty('--t', (1 - p).toFixed(3));
         }
 
+        // Sama seperti logo.louvre.my.id: crossfade satu halaman lewat View Transitions.
+        // Fallback: tema = transisi warna, bahasa = fade teks. Reduced motion = langsung.
+        function smooth(kind, apply) {
+          if (reduce) { apply(); return; }
+          if (document.startViewTransition) {
+            d.classList.add('theming');
+            document.startViewTransition(apply).finished.finally(function () { d.classList.remove('theming'); });
+            return;
+          }
+          if (kind === 'theme') {
+            d.classList.add('tx'); apply();
+            setTimeout(function () { d.classList.remove('tx'); }, 420);
+          } else {
+            d.classList.add('fade');
+            setTimeout(function () { apply(); d.classList.remove('fade'); }, 170);
+          }
+        }
+
         function swapLang(url, push) {
           var y = window.scrollY;
           fetch(url).then(function (r) {
@@ -248,6 +266,15 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             return r.text();
           }).then(function (html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
+            var anchor = currentAnchor();
+            smooth('lang', function () { swapDom(doc, url, push, y, anchor); });
+          }).catch(function () {
+            try { sessionStorage.setItem('louvre-scroll', String(y)); } catch (e) {}
+            location.href = url;
+          });
+        }
+
+        function swapDom(doc, url, push, y, anchor) {
             d.lang = doc.documentElement.lang;
             document.title = doc.title;
             doc.querySelectorAll('.rv').forEach(function (e) { e.classList.add('in'); });
@@ -257,38 +284,30 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
               if (cur && nxt) cur.replaceWith(nxt);
             });
             if (push) history.pushState(null, '', url);
-            window.scrollTo({ top: y, behavior: 'instant' });
+            // Teks EN/ID beda panjang: kunci ke bagian yang sedang dilihat, bukan ke angka scroll.
+            var a = anchor && document.getElementById(anchor.id);
+            var top = a ? window.scrollY + a.getBoundingClientRect().top - anchor.off : y;
+            window.scrollTo({ top: top, behavior: 'instant' });
             syncScroll();
-          }).catch(function () {
-            try { sessionStorage.setItem('louvre-scroll', String(y)); } catch (e) {}
-            location.href = url;
+        }
+
+        function currentAnchor() {
+          var best = null;
+          document.querySelectorAll('main [id]').forEach(function (e) {
+            var t = e.getBoundingClientRect().top;
+            if (t <= window.innerHeight * 0.4 && (!best || t > best.off)) best = { id: e.id, off: t };
           });
+          return best;
         }
 
         document.addEventListener('click', function (ev) {
           var tBtn = ev.target.closest && ev.target.closest('.theme');
           if (tBtn) {
             var n = d.dataset.theme === 'light' ? 'dark' : 'light';
-            var apply = function () {
+            smooth('theme', function () {
               d.dataset.theme = n;
               try { localStorage.setItem('louvre-theme', n); } catch (e) {}
-            };
-            // Tema baru melebar sebagai lingkaran dari tombol (View Transitions);
-            // browser lama atau reduced motion: ganti langsung.
-            if (reduce || !document.startViewTransition) { apply(); return; }
-            var r = tBtn.getBoundingClientRect();
-            var x = r.left + r.width / 2, y = r.top + r.height / 2;
-            var rad = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-            // Matikan transisi CSS selama ganti tema: snapshot baru harus langsung final.
-            d.classList.add('theming');
-            var vt = document.startViewTransition(apply);
-            vt.ready.then(function () {
-              d.animate(
-                { clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + rad + 'px at ' + x + 'px ' + y + 'px)'] },
-                { duration: 700, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', pseudoElement: '::view-transition-new(root)' }
-              );
             });
-            vt.finished.finally(function () { d.classList.remove('theming'); });
             return;
           }
 

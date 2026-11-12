@@ -60,10 +60,13 @@
   }
 }
 
-/* ganti tema: lingkaran dari JS, matikan crossfade bawaan supaya tepinya tegas */
-::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-new(root) { z-index: 2; }
+/* ganti tema & bahasa: crossfade satu halaman, sama seperti logo.louvre.my.id */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.4s; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
 .theming *, .theming *::before, .theming *::after { transition: none !important; }
+/* fallback tanpa View Transitions */
+html.tx *, html.tx *::before, html.tx *::after { transition: background-color 0.38s ease, color 0.38s ease, border-color 0.38s ease, fill 0.38s ease, stroke 0.38s ease !important; }
+html.fade main, html.fade header, html.fade footer { opacity: 0; transition: opacity 0.17s ease; }
+main, header, footer { transition: opacity 0.17s ease; }
 
 /* gambar per tema */
 .only-light { display: none; }
