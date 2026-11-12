@@ -1,49 +1,93 @@
-// Satu-satunya tempat isi ekosistem. Tambah app = tambah satu entri.
+// Satu-satunya tempat isi ekosistem. Tambah app = tambah satu entri (teks dua bahasa).
+export type Lang = 'id' | 'en';
+type T = Record<Lang, string>;
+
 export type App = {
   id: string;
   name: string;
-  inv: string; // nomor inventaris museum, mis. 'Inv. 2026.1'
-  room: string; // nama ruang tempat karya dipajang
   year: string;
-  medium: string; // bahan/stack
-  tagline: string;
-  body: string;
+  stack: string;
   url: string;
   host: string;
-  access: 'publik' | 'butuh login';
-  image: string;
-  alt: string;
+  access: 'public' | 'login';
+  tagline: T;
+  body: T;
+  // Gambar utama panel. `light` opsional: dipakai saat tema terang.
+  image: { dark: string; light?: string; width: number; height: number; alt: T };
+  caps: { title: T; text: T }[];
 };
 
 export const apps: App[] = [
   {
     id: 'logo',
     name: 'Logo',
-    inv: 'Inv. 2026.1',
-    room: 'Ruang Identitas',
     year: '2026',
-    medium: 'SVG, Hanken Grotesk, Astro',
-    tagline: 'Identitas visual Louvre',
-    body: 'Piramida kaca dari sembilan segitiga, lockup, font, mockup, dan paket unduhan. Semua pedoman pemakaian ada di satu situs.',
+    stack: 'SVG, Hanken Grotesk, Astro',
     url: 'https://logo.louvre.my.id/',
     host: 'logo.louvre.my.id',
-    access: 'publik',
-    image: '/img/6-business-card.webp',
-    alt: 'Kartu nama hitam dan putih dengan lockup Louvre',
+    access: 'public',
+    tagline: { id: 'Identitas visual Louvre', en: 'The Louvre visual identity' },
+    body: {
+      id: 'Piramida kaca dari sembilan segitiga, lockup, font, mockup, dan paket unduhan. Semua pedoman pemakaian ada di satu situs.',
+      en: 'A glass pyramid made of nine triangles, with lockups, the typeface, mockups, and a download pack. Every usage guideline lives on one site.',
+    },
+    image: {
+      dark: '/img/shot-logo-ekspor.webp',
+      light: '/img/shot-logo-ekspor-light.webp',
+      width: 2280,
+      height: 1425,
+      alt: {
+        id: 'Panel ekspor di logo.louvre.my.id: pilih versi, lebar, latar, dan format, dengan pratinjau simbol',
+        en: 'The export panel on logo.louvre.my.id: pick a version, width, background, and format, with a preview of the symbol',
+      },
+    },
+    caps: [
+      {
+        title: { id: 'Ekspor sesuai kebutuhan', en: 'Export what you need' },
+        text: { id: 'PNG, JPG, WebP, atau SVG, dengan lebar dan latar yang dipilih sendiri.', en: 'PNG, JPG, WebP, or SVG, at the width and background you choose.' },
+      },
+      {
+        title: { id: 'Pedoman pemakaian', en: 'Usage guidelines' },
+        text: { id: 'Ruang aman, ukuran minimum, dan contoh yang perlu dihindari.', en: 'Clear space, minimum sizes, and examples of what to avoid.' },
+      },
+      {
+        title: { id: 'Delapan mockup', en: 'Eight mockups' },
+        text: { id: 'Kaos, mug, tote, kartu nama, sampai dasbor web, siap diunduh.', en: 'T-shirt, mug, tote, business card, and a web dashboard, ready to download.' },
+      },
+    ],
   },
   {
     id: 'pulse',
     name: 'Pulse',
-    inv: 'Inv. 2026.2',
-    room: 'Ruang Mesin',
     year: '2026',
-    medium: 'React, Express, MySQL',
-    tagline: 'Dasbor server pribadi',
-    body: 'Metrik live, log, terminal di browser, dan agen AI untuk satu mesin Linux. Ruang ini dikunci karena memegang kendali mesin.',
+    stack: 'React, Express, MySQL',
     url: 'https://pulse.louvre.my.id/',
     host: 'pulse.louvre.my.id',
-    access: 'butuh login',
-    image: '/img/pulse-login.webp',
-    alt: 'Halaman masuk Pulse',
+    access: 'login',
+    tagline: { id: 'Dasbor server pribadi', en: 'A personal server dashboard' },
+    body: {
+      id: 'Metrik live, log, terminal di browser, dan agen AI untuk satu mesin Linux. Dikunci di balik login karena memegang kendali mesin.',
+      en: 'Live metrics, logs, a terminal in the browser, and AI agents for one Linux machine. It sits behind a login because it controls the machine.',
+    },
+    image: {
+      dark: '/img/pulse-login.webp',
+      width: 1600,
+      height: 1000,
+      alt: { id: 'Halaman masuk Pulse', en: 'The Pulse sign-in page' },
+    },
+    caps: [
+      {
+        title: { id: 'Metrik live', en: 'Live metrics' },
+        text: { id: 'CPU, memori, disk, jaringan, dan layanan, diperbarui terus.', en: 'CPU, memory, disk, network, and services, updated continuously.' },
+      },
+      {
+        title: { id: 'Terminal di browser', en: 'Terminal in the browser' },
+        text: { id: 'Shell penuh dengan tampilan terbagi, juga nyaman dipakai dari ponsel.', en: 'A full shell with split view that also works well from a phone.' },
+      },
+      {
+        title: { id: 'Agen AI', en: 'AI agents' },
+        text: { id: 'Jalankan dan pantau agen coding langsung dari dasbor.', en: 'Start and watch coding agents straight from the dashboard.' },
+      },
+    ],
   },
 ];
