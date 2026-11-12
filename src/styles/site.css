@@ -308,6 +308,22 @@ html.js .window { --t: 1; }
 .foot a { text-decoration: none; transition: color 0.2s; }
 .foot a:hover { color: var(--ink); }
 
+/* tombol kembali ke atas */
+.btn-top {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line-2);
+  color: var(--soft); font-size: 13px; font-weight: 500;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+}
+.btn-top svg { transition: transform 0.25s var(--ease); }
+.btn-top:hover {
+  color: var(--ink); background: var(--hover); border-color: var(--line-3);
+  transform: translateY(-2px);
+}
+.btn-top:hover svg { transform: translateY(-2px); }
+.btn-top:active { transform: scale(0.96); }
+
 /* masuk saat terlihat; tanpa JS semua langsung tampil */
 html.js .rv { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--d, 0ms) var(--ease), transform 0.7s var(--d, 0ms) var(--ease); }
 html.js .rv.in { opacity: 1; transform: none; }
