@@ -241,9 +241,7 @@ html.js .window { --t: 1; }
 
 /* ===== koleksi ===== */
 .koleksi { padding-top: clamp(96px, 13vw, 176px); }
-.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px 40px; }
 .sec-head h2 { font-size: clamp(32px, 4.4vw, 56px); }
-.sec-head p { color: var(--soft); max-width: 26em; }
 
 .app {
   margin-top: clamp(24px, 3vw, 40px);
