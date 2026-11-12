@@ -57,6 +57,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           <img class="only-light" src="/img/lockup-ink.svg" alt="Louvre" height="24" />
         </a>
         <nav aria-label={t.navLabel}>
+          <span class="nav-pill" aria-hidden="true"></span>
           <a href="#koleksi">{t.collection}</a>
           {apps.map((a) => <a href={`#${a.id}`}>{a.name}</a>)}
         </nav>
@@ -75,17 +76,23 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
     </header>
 
     <main>
+      <div class="hero-zone">
+      <div class="grid-bg" aria-hidden="true"></div>
       <section class="hero wrap" aria-labelledby="judul">
-        <h1 id="judul" class="up" style="--i:0">{t.h1[0]}<br />{t.h1[1]}</h1>
+        <h1 id="judul" class="hero-h">{t.h1.map((line, li) => (
+          <span class="line">{line.split(' ').map((w, wi) => (
+            <><span class="w" style={`--w:${(li ? t.h1[0].split(' ').length : 0) + wi}`}>{w}</span>{' '}</>
+          ))}</span>
+        ))}</h1>
         <p class="lead up" style="--i:1">{t.lead}</p>
         <div class="actions up" style="--i:2">
-          <a class="btn" href="#koleksi">{t.cta}</a>
+          <a class="btn" href="#koleksi">{t.cta}<svg class="arr" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           <a class="btn btn-ghost" href={github}>{t.code}</a>
         </div>
       </section>
 
       <div class="stage wrap up" style="--i:3">
-        <div class="window" data-tilt>
+        <div class="window spot" data-tilt>
           <div class="chrome" aria-hidden="true">
             <span class="dots"><i></i><i></i><i></i></span>
             <span class="url"><svg class="pl" viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>pulse.louvre.my.id</span>
@@ -94,12 +101,14 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
         </div>
         <p class="stage-note">{t.sample}</p>
       </div>
+      </div>
 
       <nav class="strip wrap up" style="--i:4" aria-label={t.apps}>
         {apps.map((a) => (
-          <a href={`#${a.id}`} class="strip-item">
+          <a href={`#${a.id}`} class="strip-item spot">
             <span class={`app-icon sm ic-${a.icon}`} aria-hidden="true"><AppIcon icon={a.icon} /></span>
             <span><strong>{a.name}</strong><small>{a.tagline[lang]}</small></span>
+            <svg class="go" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         ))}
       </nav>
@@ -110,7 +119,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
         </div>
 
         {apps.map((a, i) => (
-          <article id={a.id} class={`app ${i % 2 ? 'flip' : ''}`} aria-labelledby={`a-${a.id}`}>
+          <article id={a.id} class={`app spot ${i % 2 ? 'flip' : ''}`} aria-labelledby={`a-${a.id}`}>
             <div class="app-text">
               <span class={`app-icon rv ic-${a.icon}`} aria-hidden="true">
                 <AppIcon icon={a.icon} />
@@ -149,6 +158,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
       </section>
 
       <section class="close wrap" aria-labelledby="close-h">
+        <div class="grid-bg" aria-hidden="true"></div>
         <span class="close-mark" aria-hidden="true">
           <img class="only-dark" src="/img/symbol-white.svg" alt="" width="320" height="320" loading="lazy" />
           <img class="only-light" src="/img/symbol-ink.svg" alt="" width="320" height="320" loading="lazy" />
@@ -281,7 +291,9 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             d.lang = doc.documentElement.lang;
             document.title = doc.title;
             doc.querySelectorAll('.rv').forEach(function (e) { e.classList.add('in'); });
-            doc.querySelectorAll('.up').forEach(function (e) { e.style.animation = 'none'; });
+            doc.querySelectorAll('.up, .w').forEach(function (e) { e.style.animation = 'none'; });
+            // Contoh Pulse langsung di keadaan akhir: animasi masuknya tidak diulang.
+            doc.querySelectorAll('.ui').forEach(function (e) { e.classList.add('live', 'done'); });
             ['header', 'main', 'footer'].forEach(function (tag) {
               var cur = document.querySelector(tag), nxt = doc.querySelector(tag);
               if (cur && nxt) cur.replaceWith(nxt);
@@ -292,6 +304,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             var top = a ? window.scrollY + a.getBoundingClientRect().top - anchor.off : y;
             window.scrollTo({ top: top, behavior: 'instant' });
             syncScroll();
+            initLive();
         }
 
         function currentAnchor() {
@@ -340,7 +353,119 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           swapLang(location.pathname, false);
         });
 
+        // ===== contoh Pulse yang hidup: masuk saat terlihat, grafik CPU & log terus berjalan =====
+        var liveIO = null;
+        function initLive() {
+          if (liveIO) liveIO.disconnect();
+          var uis = document.querySelectorAll('.ui');
+          if (reduce || !('IntersectionObserver' in window)) {
+            uis.forEach(function (u) { u.classList.add('live'); });
+            return;
+          }
+          liveIO = new IntersectionObserver(function (es) {
+            es.forEach(function (en) {
+              en.target.classList.toggle('vis', en.isIntersecting);
+              if (en.isIntersecting) en.target.classList.add('live');
+            });
+          }, { threshold: 0.2 });
+          uis.forEach(function (u) { liveIO.observe(u); });
+        }
+
+        var plot = new WeakMap(), tick = 0;
+        function draw(g, ys, dx) {
+          var pts = ys.map(function (y, i) { return (i * dx).toFixed(2) + ',' + y.toFixed(1); }).join(' ');
+          g.querySelector('.ui-line').setAttribute('points', pts);
+          g.querySelector('.ui-area').setAttribute('points', '0,48 ' + pts + ' ' + ((ys.length - 1) * dx).toFixed(2) + ',48');
+        }
+        function stepChart(u) {
+          var g = u.querySelector('.ui-plot');
+          if (!g) return;
+          var ys = plot.get(g);
+          if (!ys) {
+            ys = g.querySelector('.ui-line').getAttribute('points').trim().split(/\s+/).map(function (p) { return parseFloat(p.split(',')[1]); });
+            plot.set(g, ys);
+          }
+          var dx = 100 / (ys.length - 1);
+          var next = Math.min(42, Math.max(16, ys[ys.length - 1] + (Math.random() - 0.5) * 13));
+          draw(g, ys.concat(next), dx);
+          g.style.transition = 'none'; g.style.transform = 'none';
+          g.getBoundingClientRect();
+          g.style.transition = 'transform 1.4s cubic-bezier(0.4, 0, 0.2, 1)';
+          g.style.transform = 'translateX(-' + dx.toFixed(2) + 'px)';
+          setTimeout(function () {
+            ys.shift(); ys.push(next);
+            g.style.transition = 'none'; g.style.transform = 'none';
+            draw(g, ys, dx);
+            var cpu = Math.round(47 - next), tile = u.querySelector('.ui-tiles .ui-card');
+            if (tile) {
+              tile.querySelector('b').textContent = cpu + '%';
+              tile.querySelector('.ui-bar i').style.width = cpu + '%';
+            }
+          }, 1450);
+        }
+        function stepLogs(u) {
+          var box = u.querySelector('.ui-logs'), rows = box && box.querySelectorAll('p');
+          if (!rows || rows.length < 2) return;
+          var first = rows[0], last = rows[rows.length - 1];
+          var t = first.querySelector('time').textContent.split(':').map(Number);
+          var sec = t[0] * 3600 + t[1] * 60 + t[2] + 6 + Math.floor(Math.random() * 14);
+          var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+          last.querySelector('time').textContent = pad(Math.floor(sec / 3600) % 24) + ':' + pad(Math.floor(sec / 60) % 60) + ':' + pad(sec % 60);
+          last.classList.remove('new');
+          first.before(last);
+          last.getBoundingClientRect();
+          last.classList.add('new');
+        }
+        if (!reduce) {
+          setInterval(function () {
+            if (document.hidden) return;
+            var u = document.querySelector('.ui-overview.live.vis');
+            if (!u) return;
+            tick++;
+            stepChart(u);
+            if (tick % 2 === 0) stepLogs(u);
+          }, 2200);
+        }
+
+        // ===== sorotan kursor (kartu, jendela, grid hero) & penanda menu =====
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+          document.addEventListener('pointermove', function (ev) {
+            var el = ev.target.closest && ev.target.closest('.spot');
+            if (el) {
+              var r = el.getBoundingClientRect();
+              el.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+              el.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+            }
+            var z = ev.target.closest && ev.target.closest('.hero-zone, .close');
+            if (z) {
+              var zr = z.getBoundingClientRect();
+              z.style.setProperty('--hx', (ev.clientX - zr.left) + 'px');
+              z.style.setProperty('--hy', (ev.clientY - zr.top) + 'px');
+            }
+          }, { passive: true });
+          document.addEventListener('pointerover', function (ev) {
+            var a = ev.target.closest && ev.target.closest('.top nav a');
+            if (!a) return;
+            var pill = a.parentElement.querySelector('.nav-pill');
+            if (!pill) return;
+            var fresh = !pill.classList.contains('on');
+            if (fresh) pill.style.transition = 'none';
+            pill.style.width = a.offsetWidth + 'px';
+            pill.style.height = a.offsetHeight + 'px';
+            pill.style.transform = 'translate(' + a.offsetLeft + 'px,' + a.offsetTop + 'px)';
+            if (fresh) { pill.getBoundingClientRect(); pill.style.transition = ''; }
+            pill.classList.add('on');
+          });
+          document.addEventListener('pointerout', function (ev) {
+            var nav = ev.target.closest && ev.target.closest('.top nav');
+            if (!nav || (ev.relatedTarget && nav.contains(ev.relatedTarget))) return;
+            var pill = nav.querySelector('.nav-pill');
+            if (pill) pill.classList.remove('on');
+          });
+        }
+
         if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+        initLive();
         observeRv();
         if (savedY !== null) {
           window.scrollTo({ top: parseFloat(savedY) || 0, behavior: 'instant' });
