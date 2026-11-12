@@ -308,21 +308,28 @@ html.js .window { --t: 1; }
 .foot a { text-decoration: none; transition: color 0.2s; }
 .foot a:hover { color: var(--ink); }
 
-/* tombol kembali ke atas */
-.btn-top {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 5px 12px; border-radius: 999px;
-  background: var(--panel); border: 1px solid var(--line-2);
-  color: var(--soft); font-size: 13px; font-weight: 500;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s, transform 0.2s var(--ease);
+/* visually hidden untuk aksesibilitas screen reader */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* tombol kembali ke atas fixed mengambang persis seperti logo.louvre.my.id */
+.totop {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--ink); color: var(--bg);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  opacity: 0; visibility: hidden; translate: 0 12px;
+  transition: opacity 0.2s, translate 0.2s, visibility 0.2s, filter 0.2s;
+  z-index: 20;
 }
-.btn-top svg { transition: transform 0.25s var(--ease); }
-.btn-top:hover {
-  color: var(--ink); background: var(--hover); border-color: var(--line-3);
-  transform: translateY(-2px);
+.totop.on { opacity: 1; visibility: visible; translate: 0 0; }
+.totop:hover { filter: brightness(1.2); }
+.totop:active { transform: scale(0.94); }
+@media (prefers-reduced-motion: reduce) {
+  .totop { transition: none; }
 }
-.btn-top:hover svg { transform: translateY(-2px); }
-.btn-top:active { transform: scale(0.96); }
 
 /* masuk saat terlihat; tanpa JS semua langsung tampil */
 html.js .rv { opacity: 0; transform: translateY(18px); transition: opacity 0.7s var(--d, 0ms) var(--ease), transform 0.7s var(--d, 0ms) var(--ease); }

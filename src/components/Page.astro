@@ -150,17 +150,16 @@ const github = 'https://github.com/bahawww';
         <ul>
           {apps.map((a) => <li><a href={a.url}>{a.host}</a></li>)}
           <li><a href={ui[other].path} hreflang={other} lang={other}>{other === 'en' ? 'English' : 'Bahasa Indonesia'}</a></li>
-          <li>
-            <a href="#judul" class="btn-top">
-              <span>{t.toTop}</span>
-              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M8 12.5V3.5M3.5 8 8 3.5 12.5 8" />
-              </svg>
-            </a>
-          </li>
         </ul>
       </div>
     </footer>
+
+    <a class="totop" href="#judul" aria-label={t.toTop} title={t.toTop}>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="vh">{t.toTop}</span>
+    </a>
 
     <script is:inline>
       (function () {
@@ -197,6 +196,8 @@ const github = 'https://github.com/bahawww';
         function syncScroll() {
           var top = document.querySelector('.top');
           if (top) top.classList.toggle('scrolled', window.scrollY > 8);
+          var tt = document.querySelector('.totop');
+          if (tt) tt.classList.toggle('on', window.scrollY > window.innerHeight * 0.7);
           var w = document.querySelector('[data-tilt]');
           if (!w || reduce) return;
           var r = w.getBoundingClientRect();
