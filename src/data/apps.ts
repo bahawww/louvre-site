@@ -6,7 +6,6 @@ export type App = {
   id: string;
   name: string;
   year: string;
-  stack: string;
   url: string;
   host: string;
   access: 'public' | 'login';
@@ -24,7 +23,6 @@ export const apps: App[] = [
     id: 'pulse',
     name: 'Pulse',
     year: '2026',
-    stack: 'React, Express, MySQL',
     url: 'https://pulse.louvre.my.id/',
     host: 'pulse.louvre.my.id',
     access: 'login',
@@ -54,7 +52,6 @@ export const apps: App[] = [
     id: 'logo',
     name: 'Logo',
     year: '2026',
-    stack: 'SVG, Hanken Grotesk, Astro',
     url: 'https://logo.louvre.my.id/',
     host: 'logo.louvre.my.id',
     access: 'public',

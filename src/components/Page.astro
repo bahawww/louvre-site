@@ -73,20 +73,15 @@ const github = 'https://github.com/bahawww';
 
     <main>
       <section class="hero wrap" aria-labelledby="judul">
-        <a class="status up" href="#koleksi" style="--i:0">
-          <span class="dot pub" aria-hidden="true"></span>
-          {t.status(apps.length)}
-          <span aria-hidden="true">→</span>
-        </a>
-        <h1 id="judul" class="up" style="--i:1">{t.h1[0]}<br />{t.h1[1]}</h1>
-        <p class="lead up" style="--i:2">{t.lead}</p>
-        <div class="actions up" style="--i:3">
+        <h1 id="judul" class="up" style="--i:0">{t.h1[0]}<br />{t.h1[1]}</h1>
+        <p class="lead up" style="--i:1">{t.lead}</p>
+        <div class="actions up" style="--i:2">
           <a class="btn" href="#koleksi">{t.cta}</a>
           <a class="btn btn-ghost" href={github}>{t.code}</a>
         </div>
       </section>
 
-      <div class="stage wrap up" style="--i:4">
+      <div class="stage wrap up" style="--i:3">
         <div class="window" data-tilt>
           <div class="chrome" aria-hidden="true">
             <span class="dots"><i></i><i></i><i></i></span>
@@ -94,7 +89,6 @@ const github = 'https://github.com/bahawww';
           </div>
           <PulseMock lang={lang} view="overview" />
         </div>
-        <p class="stage-note">{t.mockNote}</p>
       </div>
 
       <section id="koleksi" class="koleksi wrap" aria-labelledby="koleksi-h">
@@ -122,7 +116,6 @@ const github = 'https://github.com/bahawww';
               <dl class="facts rv">
                 <div><dt>{t.access}</dt><dd><span class={`dot ${a.access === 'public' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'public' ? t.public : t.login}</dd></div>
                 <div><dt>{t.since}</dt><dd>{a.year}</dd></div>
-                <div><dt>{t.builtWith}</dt><dd>{a.stack}</dd></div>
                 <div><dt>{t.address}</dt><dd>{a.host}</dd></div>
               </dl>
               <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
@@ -142,15 +135,6 @@ const github = 'https://github.com/bahawww';
             </ul>
           </article>
         ))}
-
-        <div class="next rv">
-          <span class="app-icon" aria-hidden="true">+</span>
-          <div>
-            <h3>{t.nextName}</h3>
-            <p class="app-tag">{t.nextTag}</p>
-          </div>
-          <p class="next-body">{t.nextBody}</p>
-        </div>
       </section>
 
       <section class="close wrap" aria-labelledby="close-h">

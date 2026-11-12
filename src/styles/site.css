@@ -139,14 +139,7 @@ html:not(.js) .theme { display: none; }
 
 /* ===== hero ===== */
 .hero { padding-top: clamp(56px, 10vw, 124px); display: flex; flex-direction: column; align-items: flex-start; }
-.status {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line-2);
-  background: var(--panel); color: var(--soft); font-size: 14px; text-decoration: none;
-  transition: color 0.2s, border-color 0.2s;
-}
-.status:hover { color: var(--ink); border-color: var(--line-3); }
-.hero h1 { margin-top: 28px; font-size: clamp(33px, 7vw, 92px); letter-spacing: -0.045em; line-height: 1; }
+.hero h1 { font-size: clamp(33px, 7vw, 92px); letter-spacing: -0.045em; line-height: 1; }
 .lead { margin-top: 24px; font-size: clamp(18px, 1.6vw, 21px); line-height: 1.5; color: var(--soft); max-width: 34em; text-wrap: pretty; }
 .actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 
@@ -185,7 +178,6 @@ html.js .window { --t: 1; }
 .window img { width: 100%; }
 .url { display: inline-flex; align-items: center; gap: 8px; }
 .url .pl { width: 14px; height: 14px; }
-.stage-note { margin-top: 14px; text-align: center; font-size: 14px; color: var(--dim); }
 
 /* logo Pulse (mengikuti tema, seperti favicon aslinya) */
 .pl-bg { fill: var(--ink); }
@@ -274,9 +266,8 @@ html.js .window { --t: 1; }
 .app h3 { margin-top: 22px; font-size: clamp(30px, 3.2vw, 42px); }
 .app-tag { margin-top: 8px; color: var(--soft); font-size: 18px; }
 .app-body { margin-top: 18px; }
-.facts { margin-top: 26px; width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-.facts > div { padding: 14px 0; border-bottom: 1px solid var(--line); }
-.facts > div:nth-child(odd) { padding-right: 16px; }
+.facts { margin-top: 26px; width: 100%; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 0 24px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.facts > div { padding: 14px 0; }
 .facts dt { font-size: 13px; color: var(--dim); }
 .facts dd { margin: 2px 0 0; font-size: 15px; display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
 .more {
@@ -305,17 +296,6 @@ html.js .window { --t: 1; }
 .caps strong { font-weight: 600; font-size: 16px; }
 .caps span { color: var(--soft); font-size: 15px; line-height: 1.5; }
 
-/* slot alat berikutnya */
-.next {
-  margin-top: clamp(24px, 3vw, 40px);
-  display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr); align-items: center; gap: 20px clamp(20px, 4vw, 56px);
-  padding: clamp(24px, 3.4vw, 44px);
-  border: 1px dashed var(--line-3); border-radius: calc(var(--r) + 4px);
-}
-.next h3 { font-size: clamp(24px, 2.4vw, 30px); }
-.next .app-tag { margin-top: 4px; font-size: 16px; }
-.next-body { color: var(--soft); }
-
 /* ===== penutup ===== */
 .close { padding-block: clamp(96px, 13vw, 176px); display: flex; flex-direction: column; align-items: flex-start; }
 .close h2 { font-size: clamp(32px, 4.4vw, 56px); max-width: 16ch; }
@@ -341,8 +321,6 @@ html.js .rv.in { opacity: 1; transform: none; }
   .app.flip .app-shot img, .app.flip .app-shot .ui-wrap { border-radius: 12px 0 0 0; border: 1px solid var(--line-2); border-right: 0; border-bottom: 0; }
   .caps { grid-template-columns: minmax(0, 1fr); }
   .caps li + li { border-left: 0; border-top: 1px solid var(--line); }
-  .next { grid-template-columns: auto minmax(0, 1fr); }
-  .next-body { grid-column: 1 / -1; }
   .chrome { height: 34px; }
   .dots i { width: 8px; height: 8px; }
   .url { padding: 2px 12px; }
