@@ -166,6 +166,21 @@ const github = 'https://github.com/bahawww';
           try { localStorage.setItem('louvre-theme', n); } catch (e) {}
         });
 
+        // Scroll ke bagian halaman tanpa memunculkan #hash di address bar
+        document.addEventListener('click', function (ev) {
+          var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+          if (!a) return;
+          var id = a.getAttribute('href').slice(1);
+          var t = id ? document.getElementById(id) : null;
+          if (!t && id !== 'judul') return;
+          ev.preventDefault();
+          var beh = reduce ? 'auto' : 'smooth';
+          if (id === 'judul') window.scrollTo({ top: 0, behavior: beh });
+          else t.scrollIntoView({ behavior: beh });
+          if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+        });
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+
         var els = document.querySelectorAll('.rv');
         if (reduce || !('IntersectionObserver' in window)) {
           els.forEach(function (e) { e.classList.add('in'); });
