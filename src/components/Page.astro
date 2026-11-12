@@ -90,6 +90,7 @@ const github = 'https://github.com/bahawww';
           </div>
           <PulseMock lang={lang} view="overview" />
         </div>
+        <p class="stage-note">{t.sample}</p>
       </div>
 
       <section id="koleksi" class="koleksi wrap" aria-labelledby="koleksi-h">
@@ -118,7 +119,14 @@ const github = 'https://github.com/bahawww';
                 <div><dt>{t.since}</dt><dd>{a.year}</dd></div>
                 <div><dt>{t.address}</dt><dd>{a.host}</dd></div>
               </dl>
-              <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
+              {a.access === 'login' ? (
+                <div class="more-row rv">
+                  <a class="more" href={a.url}>{t.signIn} {a.host} <span aria-hidden="true">→</span></a>
+                  <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>{t.ownerOnly}</span>
+                </div>
+              ) : (
+                <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
+              )}
             </div>
             <figure class={`app-shot rv ${a.image ? '' : 'has-mock'}`}>
               {a.image ? (
