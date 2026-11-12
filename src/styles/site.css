@@ -62,16 +62,10 @@
 
 /* ganti tema & bahasa: crossfade satu halaman, sama seperti logo.louvre.my.id */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.4s; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
-/* navbar sticky + backdrop-filter hilang sekejap di HP kalau ikut snapshot root:
-   beri snapshot sendiri, tetap di posisinya, di atas root. */
-.top { view-transition-name: top; }
-.theming .top { background: var(--bg); }
-::view-transition-group(top) { animation: none; z-index: 1; }
-::view-transition-old(top), ::view-transition-new(top) { animation-duration: 0.4s; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
 .theming *, .theming *::before, .theming *::after { transition: none !important; }
 /* fallback tanpa View Transitions */
 html.tx *, html.tx *::before, html.tx *::after { transition: background-color 0.38s ease, color 0.38s ease, border-color 0.38s ease, fill 0.38s ease, stroke 0.38s ease !important; }
-html.fade main, html.fade header, html.fade footer { opacity: 0; transition: opacity 0.17s ease; }
+html.fade main, html.fade footer { opacity: 0; transition: opacity 0.17s ease; }
 main, header, footer { transition: opacity 0.17s ease; }
 
 /* scrollbar sama seperti logo.louvre.my.id: tipis, membulat, tanpa track, ikut tema */

@@ -201,6 +201,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
       (function () {
         var d = document.documentElement;
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var touch = window.matchMedia('(pointer: coarse)').matches;
 
         // Pulihkan posisi scroll jika pindah bahasa lewat reload penuh
         var savedY = null;
@@ -245,7 +246,9 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
         // Fallback: tema = transisi warna, bahasa = fade teks. Reduced motion = langsung.
         function smooth(kind, apply) {
           if (reduce) { apply(); return; }
-          if (document.startViewTransition) {
+          // Di HP (layar sentuh) snapshot View Transition membuat navbar sticky hilang sekejap
+          // saat halaman di-scroll: pakai transisi CSS biasa yang tidak melepas navbar.
+          if (document.startViewTransition && !touch) {
             d.classList.add('theming');
             document.startViewTransition(apply).finished.finally(function () { d.classList.remove('theming'); });
             return;
