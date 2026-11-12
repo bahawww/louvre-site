@@ -20,9 +20,9 @@ const github = 'https://github.com/bahawww';
     <meta name="description" content={t.description} />
     <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href={site + t.path} />
-    <link rel="alternate" hreflang="id" href={site + ui.id.path} />
     <link rel="alternate" hreflang="en" href={site + ui.en.path} />
-    <link rel="alternate" hreflang="x-default" href={site + ui.id.path} />
+    <link rel="alternate" hreflang="id" href={site + ui.id.path} />
+    <link rel="alternate" hreflang="x-default" href={site + ui.en.path} />
     <link rel="icon" href="/img/favicon.ico" sizes="any" />
     <link rel="icon" href="/img/symbol-ink.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/img/symbol-white.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
@@ -59,8 +59,8 @@ const github = 'https://github.com/bahawww';
         </nav>
         <div class="tools">
           <div class="seg" role="group" aria-label={t.langLabel}>
-            <a href={ui.id.path} hreflang="id" lang="id" aria-current={lang === 'id' ? 'true' : undefined}>ID</a>
             <a href={ui.en.path} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+            <a href={ui.id.path} hreflang="id" lang="id" aria-current={lang === 'id' ? 'true' : undefined}>ID</a>
           </div>
           <button class="theme" type="button" aria-label={t.themeLabel} title={t.themeLabel}>
             <svg class="only-dark" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor" /><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7" /></g></svg>

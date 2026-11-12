@@ -2,7 +2,7 @@ import type { Lang } from './apps';
 
 export const ui = {
   id: {
-    path: '/',
+    path: '/id/',
     title: 'Louvre — workspace pribadi, satu alat demi satu',
     description: 'Louvre mengumpulkan alat yang dibangun sendiri: dasbor server, identitas visual, dan yang berikutnya.',
     home: 'Louvre, beranda',
@@ -27,7 +27,7 @@ export const ui = {
     toTop: 'Kembali ke atas',
   },
   en: {
-    path: '/en/',
+    path: '/',
     title: 'Louvre — a personal workspace, one tool at a time',
     description: 'Louvre gathers tools built in-house: a server dashboard, a visual identity, and whatever comes next.',
     home: 'Louvre, home',
