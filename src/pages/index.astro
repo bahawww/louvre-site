@@ -2,13 +2,10 @@
 import { apps } from '../data/apps';
 import '../styles/site.css';
 
-
-const title = 'Louvre — workspace dan ekosistem app';
-const description = 'Louvre adalah workspace pribadi: identitas, dasbor server, dan alat lain yang dibangun satu per satu.';
-const band = [
-  { src: '/img/5-dashboard.webp', alt: 'Lockup Louvre pada tampilan dasbor' },
-  { src: '/img/1-tshirt.webp', alt: 'Lockup Louvre pada kaos' },
-];
+const title = 'Louvre — galeri kecil berisi alat yang dibangun sendiri';
+const description = 'Louvre adalah workspace pribadi yang dipajang seperti museum: identitas, dasbor server, dan karya berikutnya.';
+// Prototipe: lobi + satu ruang. Ruang lain menyusul setelah arah disetujui.
+const rooms = apps.slice(0, 1);
 ---
 <!doctype html>
 <html lang="id">
@@ -17,12 +14,14 @@ const band = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0b0b0c" />
     <link rel="canonical" href="https://louvre.my.id/" />
     <link rel="icon" href="/img/favicon.ico" sizes="any" />
     <link rel="icon" href="/img/symbol-ink.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="/img/symbol-white.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/HankenGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -35,115 +34,83 @@ const band = [
   <body>
     <header class="top">
       <a href="/" class="mark" aria-label="Louvre, beranda">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="/img/lockup-white.svg" />
-          <img src="/img/lockup-ink.svg" alt="Louvre" height="30" />
-        </picture>
+        <img src="/img/lockup-white.svg" alt="Louvre" height="28" />
       </a>
       <nav aria-label="Utama">
-        <a href="#tentang">Tentang</a>
-        <a href="#app">App</a>
-        <a href="#kontak">Kontak</a>
+        <a href="#koleksi">Koleksi</a>
+        <a href="#buku-tamu">Buku tamu</a>
       </nav>
     </header>
 
     <main>
-      <section class="hero" aria-labelledby="judul">
-        <h1 id="judul">
-          <span class="line"><span class="inner">Satu workspace,</span></span>
-          <span class="line"><span class="inner">banyak alat.</span></span>
-        </h1>
-        <div class="hero-foot">
-          <p class="lead">Louvre adalah ekosistem app pribadi: identitas, dasbor server, dan alat lain yang dibangun satu per satu.</p>
-          <a class="btn" href="#app">Lihat app</a>
+      <section class="lobby" aria-labelledby="judul">
+        <div class="lightbox" aria-hidden="true"></div>
+        <div class="cone" aria-hidden="true"></div>
+        <div class="floor" aria-hidden="true"></div>
+
+        <div class="lobby-copy">
+          <h1 id="judul">
+            <span class="line"><span class="inner">Selamat datang</span></span>
+            <span class="line"><span class="inner">di Louvre.</span></span>
+          </h1>
+          <p class="lead">Galeri kecil berisi alat yang dibangun satu per satu. Lampunya baru dinyalakan, silakan masuk.</p>
+          <a class="btn" href="#koleksi">Masuk ke galeri</a>
         </div>
+
+        <figure class="exhibit-0">
+          <img class="symbol" src="/img/symbol-white.svg" alt="Simbol Louvre: piramida dari sembilan segitiga" width="160" height="160" />
+          <div class="plinth" aria-hidden="true"></div>
+        </figure>
       </section>
 
-      <section id="tentang" class="peta" aria-labelledby="tentang-h">
-        <div class="peta-map">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="/img/symbol-white.svg" />
-            <img class="symbol" src="/img/symbol-ink.svg" alt="Simbol Louvre: piramida kaca" width="480" height="480" />
-          </picture>
-        </div>
-        <div class="peta-text">
-          <h2 id="tentang-h">Dipinjam dari museum.</h2>
-          <p class="statement">Louvre di Paris adalah bangunan yang tumbuh bersama koleksinya. Workspace ini dibuat dengan cara yang sama: alat dibangun satu per satu, lalu dipajang di sini dengan kartu keterangannya.</p>
-          <div class="facts">
-            <p>Sejak 2026</p>
-            <p>Kode terbuka di GitHub</p>
-          </div>
-        </div>
-      </section>
+      <div id="koleksi">
+        {rooms.map((a) => (
+          <section class="room" aria-labelledby={`r-${a.id}`}>
+            <div class="room-cone" aria-hidden="true"></div>
+            <h2 id={`r-${a.id}`} class="room-name">{a.room}</h2>
 
-      <section id="app" class="apps" aria-labelledby="app-h">
-        <h2 id="app-h">Sedang dipajang.</h2>
-        {apps.map((a, i) => (
-          <article class={`app ${i % 2 ? 'flip' : ''}`}>
-            <div class="app-pic rv">
-              <img src={a.image} alt={a.alt} width="1600" height="1000" loading="lazy" decoding="async" />
-            </div>
-            <div class="app-text">
-              <h3 class="rv">{a.name}</h3>
-              <p class="tag rv">{a.tagline}</p>
-              <p class="rv">{a.body}</p>
-              <p class="access rv"><span class={`dot ${a.access === 'publik' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'publik' ? 'Terbuka untuk umum' : 'Ruang tertutup, butuh login'}</p>
-              <a class="btn rv" href={a.url}>Buka {a.host}</a>
-            </div>
-          </article>
+            <figure class="work">
+              <div class="frame">
+                <img src={a.image} alt={a.alt} width="1200" height="900" loading="lazy" decoding="async" />
+              </div>
+            </figure>
+
+            <aside class="placard" aria-label={`Keterangan karya ${a.name}`}>
+              <p class="p-name">{a.name}</p>
+              <p class="p-meta">Louvre, {a.year}<br />{a.medium}</p>
+              <p class="p-body">{a.body}</p>
+              <p class="p-access">
+                <span class={`dot ${a.access === 'publik' ? 'pub' : 'priv'}`} aria-hidden="true"></span>
+                {a.access === 'publik' ? 'Terbuka untuk umum' : 'Ruang tertutup, butuh login'}
+              </p>
+              <a class="btn btn-ink" href={a.url}>Kunjungi {a.host}</a>
+              <p class="p-inv">{a.inv}</p>
+            </aside>
+            <div class="room-floor" aria-hidden="true"></div>
+          </section>
         ))}
-      </section>
+      </div>
 
-      <section class="band" aria-label="Logo Louvre pada beberapa media">
-        {band.map((b) => <img class="drift" src={b.src} alt={b.alt} width="1600" height="1000" loading="lazy" decoding="async" />)}
-      </section>
-
-      <section class="daftar" aria-labelledby="daftar-h">
-        <h2 id="daftar-h">Daftar koleksi.</h2>
-        <ul class="rows">
-          {apps.map((a) => (
-            <li class="rv"><a href={a.url}><span class="dot on" aria-hidden="true"></span><span class="rn">{a.name}</span><span class="rv2">{a.host}</span></a></li>
-          ))}
-          <li class="rv muted"><span class="dot off" aria-hidden="true"></span><span class="rn">Koleksi berikutnya</span><span class="rv2">menyusul</span></li>
-        </ul>
-      </section>
-
-      <section id="kontak" class="kontak" aria-labelledby="kontak-h">
-        <h2 id="kontak-h">Ada ide untuk koleksi berikutnya?</h2>
-        <p class="statement">Kode dan catatan dikerjakan terbuka di GitHub. Mulai dari sana.</p>
-        <a class="btn" href="https://github.com/bahawww">github.com/bahawww</a>
+      <section id="buku-tamu" class="guest" aria-labelledby="tamu-h">
+        <h2 id="tamu-h">Ruang berikutnya sedang disiapkan.</h2>
+        <p class="lead">Prototipe: lobi dan satu ruang. Denah, ruang Pulse, alas kosong, dan buku tamu menyusul setelah arah ini disetujui.</p>
       </section>
     </main>
 
-    <footer class="foot">
-      <div class="foot-top">
-        <p>Louvre workspace</p>
-        <p><a href="https://logo.louvre.my.id/">logo.louvre.my.id</a><br /><a href="https://pulse.louvre.my.id/">pulse.louvre.my.id</a></p>
-        <a href="#judul">Kembali ke atas</a>
-      </div>
-      <p class="big" aria-hidden="true">Louvre</p>
-    </footer>
-
     <script is:inline>
       (function () {
+        var rooms = document.querySelectorAll('.room');
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var els = document.querySelectorAll('.rv');
         if (reduce || !('IntersectionObserver' in window)) {
-          els.forEach(function (e) { e.classList.add('in'); });
-        } else {
-          var io = new IntersectionObserver(function (es) {
-            es.forEach(function (en) {
-              if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-            });
-          }, { rootMargin: '0px 0px -8% 0px' });
-          var sib = new Map();
-          els.forEach(function (e) {
-            var p = e.parentElement, n = sib.get(p) || 0;
-            e.style.setProperty('--d', n * 70 + 'ms');
-            sib.set(p, n + 1);
-            io.observe(e);
-          });
+          rooms.forEach(function (r) { r.classList.add('lit'); });
+          return;
         }
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('lit'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.35 });
+        rooms.forEach(function (r) { io.observe(r); });
       })();
     </script>
   </body>
