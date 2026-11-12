@@ -1,24 +1,7 @@
 ---
-import { apps, totalSlots } from '../data/apps';
+import { apps } from '../data/apps';
 import '../styles/site.css';
 
-// Sembilan segitiga seperti simbol Louvre: baris berisi 1, 3, 5. Sisi 100, tinggi 86.6.
-const H = 86.6;
-const tris: { points: string; slot: number }[] = [];
-let slot = 0;
-for (let r = 1; r <= 3; r++) {
-  const ox = (3 - r) * 50;
-  const y0 = (r - 1) * H;
-  const y1 = r * H;
-  for (let k = 0; k < r; k++) {
-    // segitiga atas, lalu segitiga bawah di antaranya
-    tris.push({ slot: slot++, points: `${ox + k * 100 + 50},${y0} ${ox + k * 100},${y1} ${ox + (k + 1) * 100},${y1}` });
-    if (k < r - 1) tris.push({ slot: slot++, points: `${ox + 50 + k * 100},${y0} ${ox + 150 + k * 100},${y0} ${ox + 100 + k * 100},${y1}` });
-  }
-}
-const bySlot = new Map(apps.map((a) => [a.slot, a]));
-const filled = apps.length;
-const empty = totalSlots - filled;
 
 const title = 'Louvre — workspace dan ekosistem app';
 const description = 'Louvre adalah workspace pribadi: identitas, dasbor server, dan alat lain yang dibangun satu per satu.';
@@ -58,7 +41,7 @@ const band = [
         </picture>
       </a>
       <nav aria-label="Utama">
-        <a href="#peta">Peta</a>
+        <a href="#tentang">Tentang</a>
         <a href="#app">App</a>
         <a href="#kontak">Kontak</a>
       </nav>
@@ -76,35 +59,25 @@ const band = [
         </div>
       </section>
 
-      <section id="peta" class="peta" aria-labelledby="peta-h">
+      <section id="tentang" class="peta" aria-labelledby="tentang-h">
         <div class="peta-map">
-          <svg viewBox="0 0 300 260" role="group" aria-label="Peta ekosistem: sembilan segitiga, dua menyala" class="pyramid">
-            {tris.map((t) => {
-              const app = bySlot.get(t.slot);
-              return app ? (
-                <a href={app.url} data-name={app.name} data-info={`${app.tagline} · ${app.host}`} aria-label={`${app.name}: ${app.tagline}`}>
-                  <polygon class="tri on" points={t.points} />
-                </a>
-              ) : (
-                <polygon class="tri off" points={t.points} data-name="Slot kosong" data-info="Belum diisi app" />
-              );
-            })}
-          </svg>
-          <p class="caption" id="caption" aria-live="polite"><strong>{filled} dari {totalSlots} menyala.</strong> <span id="caption-info">Arahkan ke segitiga untuk melihat isinya.</span></p>
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="/img/symbol-white.svg" />
+            <img class="symbol" src="/img/symbol-ink.svg" alt="Simbol Louvre: piramida kaca" width="480" height="480" />
+          </picture>
         </div>
         <div class="peta-text">
-          <h2 id="peta-h">Satu segitiga, satu app.</h2>
-          <p class="statement">Logo Louvre tersusun dari sembilan segitiga. Ekosistemnya mengikuti bentuk yang sama: setiap app mengisi satu segitiga, dan sisanya dibiarkan kosong sampai ada yang layak mengisinya.</p>
+          <h2 id="tentang-h">Dipinjam dari museum.</h2>
+          <p class="statement">Louvre di Paris adalah bangunan yang tumbuh bersama koleksinya. Workspace ini dibuat dengan cara yang sama: alat dibangun satu per satu, lalu dipajang di sini dengan kartu keterangannya.</p>
           <div class="facts">
-            <p>{filled} app menyala</p>
-            <p>{empty} slot menunggu</p>
             <p>Sejak 2026</p>
+            <p>Kode terbuka di GitHub</p>
           </div>
         </div>
       </section>
 
       <section id="app" class="apps" aria-labelledby="app-h">
-        <h2 id="app-h">Yang sudah menyala.</h2>
+        <h2 id="app-h">Sedang dipajang.</h2>
         {apps.map((a, i) => (
           <article class={`app ${i % 2 ? 'flip' : ''}`}>
             <div class="app-pic rv">
@@ -114,7 +87,7 @@ const band = [
               <h3 class="rv">{a.name}</h3>
               <p class="tag rv">{a.tagline}</p>
               <p class="rv">{a.body}</p>
-              <p class="access rv"><span class={`dot ${a.access === 'publik' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'publik' ? 'Terbuka untuk siapa saja' : 'Butuh login'}</p>
+              <p class="access rv"><span class={`dot ${a.access === 'publik' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'publik' ? 'Terbuka untuk umum' : 'Ruang tertutup, butuh login'}</p>
               <a class="btn rv" href={a.url}>Buka {a.host}</a>
             </div>
           </article>
@@ -126,17 +99,17 @@ const band = [
       </section>
 
       <section class="daftar" aria-labelledby="daftar-h">
-        <h2 id="daftar-h">Peta singkat.</h2>
+        <h2 id="daftar-h">Daftar koleksi.</h2>
         <ul class="rows">
           {apps.map((a) => (
             <li class="rv"><a href={a.url}><span class="dot on" aria-hidden="true"></span><span class="rn">{a.name}</span><span class="rv2">{a.host}</span></a></li>
           ))}
-          <li class="rv muted"><span class="dot off" aria-hidden="true"></span><span class="rn">{empty} slot lain</span><span class="rv2">belum diisi</span></li>
+          <li class="rv muted"><span class="dot off" aria-hidden="true"></span><span class="rn">Koleksi berikutnya</span><span class="rv2">menyusul</span></li>
         </ul>
       </section>
 
       <section id="kontak" class="kontak" aria-labelledby="kontak-h">
-        <h2 id="kontak-h">Ada ide app berikutnya?</h2>
+        <h2 id="kontak-h">Ada ide untuk koleksi berikutnya?</h2>
         <p class="statement">Kode dan catatan dikerjakan terbuka di GitHub. Mulai dari sana.</p>
         <a class="btn" href="https://github.com/bahawww">github.com/bahawww</a>
       </section>
@@ -171,18 +144,6 @@ const band = [
             io.observe(e);
           });
         }
-        var cap = document.getElementById('caption-info');
-        var def = cap.textContent;
-        function show(t) { cap.textContent = t.getAttribute('data-name') + ' · ' + t.getAttribute('data-info'); }
-        document.querySelectorAll('.pyramid [data-name]').forEach(function (t) {
-          t.addEventListener('pointerenter', function () { show(t); });
-          t.addEventListener('focus', function () { show(t); });
-          t.addEventListener('pointerleave', function () { cap.textContent = def; });
-          t.addEventListener('blur', function () { cap.textContent = def; });
-        });
-        document.querySelectorAll('.pyramid polygon.off').forEach(function (p) {
-          p.addEventListener('click', function () { show(p); });
-        });
       })();
     </script>
   </body>

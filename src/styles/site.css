@@ -91,15 +91,8 @@ h2 { max-width: 16ch; }
   background: var(--tone);
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center;
 }
-.pyramid { width: 100%; max-width: 640px; height: auto; display: block; margin-inline: auto; overflow: visible; }
-.tri { stroke: var(--tone); stroke-width: 3; stroke-linejoin: round; transition: opacity 0.25s, transform 0.4s var(--ease); transform-box: fill-box; transform-origin: center; }
-.tri.on { fill: var(--ink); cursor: pointer; }
-.tri.off { fill: var(--tone2); }
-a:hover .tri.on, a:focus-visible .tri.on { opacity: 0.8; transform: scale(1.04); }
-.pyramid a:focus-visible { outline: none; }
-.tri.off:hover { opacity: 0.7; }
-.caption { margin-top: 28px; font-size: 16px; color: var(--soft); text-align: center; min-height: 3em; }
-.caption strong { color: var(--ink); font-weight: 600; }
+
+.symbol { width: min(100%, 420px); height: auto; margin-inline: auto; }
 .peta-text h2 { margin-bottom: 32px; }
 .facts { display: flex; flex-wrap: wrap; gap: 32px 56px; margin-top: 48px; }
 .facts p { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
