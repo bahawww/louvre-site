@@ -333,15 +333,27 @@ html.js .window { --t: 1; }
 .caps span { color: var(--soft); font-size: 15px; line-height: 1.5; }
 
 /* ===== penutup ===== */
-.close { padding-block: clamp(80px, 10vw, 136px); display: flex; flex-direction: column; align-items: flex-start; }
+.close { position: relative; padding-block: clamp(80px, 10vw, 136px); display: flex; flex-direction: column; align-items: flex-start; }
+.close-mark { position: absolute; right: var(--m); top: 50%; translate: 0 -50%; width: clamp(160px, 26vw, 320px); opacity: 0.07; pointer-events: none; }
+.close-mark img { width: 100%; height: auto; }
+@media (max-width: 640px) { .close-mark { display: none; } }
 .close h2 { font-size: clamp(32px, 4.4vw, 56px); max-width: 16ch; }
 
 
-.foot { border-top: 1px solid var(--line); padding-block: 32px 40px; font-size: 15px; color: var(--soft); }
-.foot-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 40px; }
-.foot ul { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.foot { border-top: 1px solid var(--line); padding-block: 48px 32px; font-size: 15px; color: var(--soft); }
+.foot-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 32px 40px; }
+.foot-brand img { height: 22px; width: auto; }
+.foot-brand p { margin-top: 14px; max-width: 30ch; line-height: 1.5; }
+.foot-h { color: var(--ink); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+.foot ul { display: flex; flex-direction: column; gap: 8px; }
 .foot a { text-decoration: none; transition: color 0.2s; }
 .foot a:hover { color: var(--ink); }
+.foot-bar { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--dim); }
+@media (max-width: 640px) {
+  .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .foot-brand { grid-column: 1 / -1; }
+  .foot-bar { flex-direction: column-reverse; align-items: flex-start; padding-bottom: 24px; }
+}
 
 /* visually hidden untuk aksesibilitas screen reader */
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

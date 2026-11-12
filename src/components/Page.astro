@@ -149,6 +149,10 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
       </section>
 
       <section class="close wrap" aria-labelledby="close-h">
+        <span class="close-mark" aria-hidden="true">
+          <img class="only-dark" src="/img/symbol-white.svg" alt="" width="320" height="320" loading="lazy" />
+          <img class="only-light" src="/img/symbol-ink.svg" alt="" width="320" height="320" loading="lazy" />
+        </span>
         <h2 id="close-h" class="rv">{t.closeH}</h2>
         <p class="lead rv">{t.closeP}</p>
         <div class="actions rv">
@@ -159,12 +163,30 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
     </main>
 
     <footer class="foot">
-      <div class="wrap foot-in">
-        <p>{t.footNote}</p>
-        <ul>
-          {apps.map((a) => <li><a href={a.url}>{a.host}</a></li>)}
-          <li><a href={ui[other].path} hreflang={other} lang={other}>{other === 'en' ? 'English' : 'Bahasa Indonesia'}</a></li>
-        </ul>
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <img class="only-dark" src="/img/lockup-white.svg" alt="Louvre" height="22" />
+            <img class="only-light" src="/img/lockup-ink.svg" alt="Louvre" height="22" />
+            <p>{t.footNote}</p>
+          </div>
+          <div>
+            <p class="foot-h">{t.collection}</p>
+            <ul>{apps.map((a) => <li><a href={a.url}>{a.name}</a></li>)}</ul>
+          </div>
+          <div>
+            <p class="foot-h">{t.project}</p>
+            <ul>
+              <li><a href={github}>GitHub</a></li>
+              <li><a href="https://github.com/bahawww/louvre-site">{t.source}</a></li>
+              <li><a href={ideaUrl}>{t.idea}</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-bar">
+          <p>© 2026 Louvre</p>
+          <a href={ui[other].path} hreflang={other} lang={other}>{other === 'en' ? 'English' : 'Bahasa Indonesia'}</a>
+        </div>
       </div>
     </footer>
 

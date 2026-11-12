@@ -27,7 +27,9 @@ export const ui = {
     open: 'Buka',
     closeH: 'Punya ide untuk alat berikutnya?',
     closeP: 'Semua dikerjakan terbuka. Ikuti repositorinya, atau tulis idemu sebagai issue.',
-    footNote: 'Louvre workspace.',
+    footNote: 'Alat pribadi yang dibangun dan dijalankan di satu server, kodenya terbuka.',
+    project: 'Proyek',
+    source: 'Kode situs ini',
     toTop: 'Kembali ke atas',
   },
   en: {
@@ -56,7 +58,9 @@ export const ui = {
     open: 'Open',
     closeH: 'Got an idea for the next tool?',
     closeP: 'Everything is built in the open. Follow the repositories, or write your idea up as an issue.',
-    footNote: 'Louvre workspace.',
+    footNote: 'Personal tools built and run on one server, with open code.',
+    project: 'Project',
+    source: 'This site\'s code',
     toTop: 'Back to top',
   },
 } satisfies Record<Lang, unknown>;
