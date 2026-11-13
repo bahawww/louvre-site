@@ -15,8 +15,6 @@ export type App = {
   // Gambar panel per bahasa dan tema. Tanpa `image`, panel memakai tampilan contoh (`mock`).
   image?: { src: Record<Lang, { dark: string; light: string }>; width: number; height: number; alt: T };
   mock?: 'pulse-terminal';
-  // Rekaman layar asli per tema (WebM + MP4 + poster). Menggantikan `image`/`mock` di panel.
-  video?: { src: Record<'dark' | 'light', { webm: string; mp4: string; poster: string }>; width: number; height: number; alt: T };
   // Komposisi panel: 'stack' (teks lalu gambar lebar), 'split' (teks | gambar), 'media' (gambar lebar lalu teks).
   layout: 'stack' | 'split' | 'media';
   caps: { title: T; text: T }[];
@@ -37,18 +35,7 @@ export const apps: App[] = [
       en: 'Live metrics, logs, a terminal in the browser, and AI agents for one Linux machine. It sits behind a login because it controls the machine.',
     },
     layout: 'stack',
-    video: {
-      src: {
-        dark: { webm: '/img/pulse-rekam-v1-dark.webm', mp4: '/img/pulse-rekam-v1-dark.mp4', poster: '/img/pulse-rekam-v1-dark.webp' },
-        light: { webm: '/img/pulse-rekam-v1-light.webm', mp4: '/img/pulse-rekam-v1-light.mp4', poster: '/img/pulse-rekam-v1-light.webp' },
-      },
-      width: 1280,
-      height: 800,
-      alt: {
-        id: 'Rekaman layar halaman Ringkasan Pulse: status sistem, grafik CPU, memori, disk, jaringan, dan daftar layanan',
-        en: 'Screen recording of the Pulse Overview page: system status, CPU chart, memory, disk, network, and the service list',
-      },
-    },
+    mock: 'pulse-terminal',
     caps: [
       {
         title: { id: 'Metrik live', en: 'Live metrics' },

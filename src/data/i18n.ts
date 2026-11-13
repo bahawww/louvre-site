@@ -31,7 +31,6 @@ export const ui = {
     project: 'Proyek',
     source: 'Kode situs ini',
     toTop: 'Kembali ke atas',
-    recorded: 'Rekaman layar Pulse asli. Nama layanan, host, dan proses disamarkan.',
     ogAlt: 'Louvre, workspace pribadi: Pulse, Logo, dan Langit Jakarta',
   },
   en: {
@@ -64,7 +63,6 @@ export const ui = {
     project: 'Project',
     source: 'This site\'s code',
     toTop: 'Back to top',
-    recorded: 'A real screen recording of Pulse. Service, host, and process names are masked.',
     ogAlt: 'Louvre, a personal workspace: Pulse, Logo, and Langit Jakarta',
   },
 } satisfies Record<Lang, unknown>;

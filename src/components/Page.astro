@@ -167,18 +167,8 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
                 )}
               </div>
             </div>
-            <figure class={`app-shot rv ${a.video ? 'has-video' : a.image ? '' : 'has-mock'}`}>
-              {a.video ? (
-                <>
-                  {(['dark', 'light'] as const).map((th) => (
-                    <video class={`only-${th}`} data-auto muted loop playsinline preload="none" poster={a.video!.src[th].poster} width={a.video!.width} height={a.video!.height} aria-label={a.video!.alt[lang]}>
-                      <source src={a.video!.src[th].webm} type="video/webm" />
-                      <source src={a.video!.src[th].mp4} type="video/mp4" />
-                    </video>
-                  ))}
-                  <figcaption>{t.recorded}</figcaption>
-                </>
-              ) : a.image ? (
+            <figure class={`app-shot rv ${a.image ? '' : 'has-mock'}`}>
+              {a.image ? (
                 <>
                   <img class="only-dark" src={a.image.src[lang].dark} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
                   <img class="only-light" src={a.image.src[lang].light} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
@@ -282,7 +272,6 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           if (top) top.classList.toggle('scrolled', window.scrollY > 8);
           var tt = document.querySelector('.totop');
           if (tt) tt.classList.toggle('on', window.scrollY > window.innerHeight * 0.7);
-          syncVideos();
           var w = document.querySelector('[data-tilt]');
           if (!w || reduce) return;
           var r = w.getBoundingClientRect();
@@ -343,7 +332,6 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             window.scrollTo({ top: top, behavior: 'instant' });
             syncScroll();
             initLive();
-            initVideos();
         }
 
         // Titik acuan saat ganti bahasa: blok yang paling dekat ke 30% tinggi layar (yang sedang dibaca).
@@ -367,7 +355,6 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             smooth('theme', function () {
               d.dataset.theme = n;
               try { localStorage.setItem('louvre-theme', n); } catch (e) {}
-              setTimeout(syncVideos, 60);
             });
             return;
           }
@@ -415,27 +402,6 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           }, { threshold: 0.2 });
           uis.forEach(function (u) { liveIO.observe(u); });
         }
-
-        // Rekaman Pulse: hanya video yang tampil (sesuai tema) dan ada di layar yang diputar.
-        function syncVideos() {
-          if (reduce) return;
-          document.querySelectorAll('video[data-auto]').forEach(function (v) {
-            var r = v.getBoundingClientRect();
-            var show = v.offsetParent !== null && !document.hidden && r.bottom > 0 && r.top < window.innerHeight;
-            if (show) {
-              if (v.preload !== 'auto') v.preload = 'auto';
-              if (v.paused) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
-            } else if (!v.paused) v.pause();
-          });
-        }
-        function initVideos() {
-          if (reduce) {
-            document.querySelectorAll('video[data-auto]').forEach(function (v) { v.controls = true; v.removeAttribute('data-auto'); });
-            return;
-          }
-          syncVideos();
-        }
-        document.addEventListener('visibilitychange', syncVideos);
 
         var plot = new WeakMap(), tick = 0;
         function draw(g, ys, dx) {
@@ -532,7 +498,6 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
 
         if (location.hash) history.replaceState(null, '', location.pathname + location.search);
         initLive();
-        initVideos();
         observeRv();
         if (savedY !== null) {
           window.scrollTo({ top: parseFloat(savedY) || 0, behavior: 'instant' });

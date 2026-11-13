@@ -542,21 +542,20 @@ html.js .rv.in { opacity: 1; transform: none; }
    =================================================================== */
 .app-intro, .app-meta { width: 100%; display: flex; flex-direction: column; align-items: flex-start; }
 .app-shot { margin: 0; align-self: stretch; display: flex; flex-direction: column; justify-content: flex-end; background: var(--panel-2); }
-video { display: block; }
-.app-shot img, .app-shot video, .app-shot .ui-wrap { width: 100%; height: auto; border: 1px solid var(--line-2); border-bottom: 0; overflow: hidden; }
-.app-shot figcaption { padding: 12px 0 14px; font-size: var(--fs-xs); color: var(--dim); }
+.app-shot img, .app-shot .ui-wrap { width: 100%; height: auto; border: 1px solid var(--line-2); border-bottom: 0; overflow: hidden; }
 
 /* split (Logo): teks kiri, tangkapan layar menempel kanan-bawah */
 .app-split .app-shot { order: 2; padding: var(--pad) 0 0 clamp(16px, 2.4vw, 32px); border-left: 1px solid var(--line); }
 .app-split .app-shot img { border-right: 0; border-top-left-radius: 12px; }
 
-/* stack (Pulse): teks dua kolom di atas, rekaman lebar di bawah */
+/* stack (Pulse): teks dua kolom di atas, terminal contoh selebar panel di bawah */
 .app-stack { grid-template-columns: minmax(0, 1fr); }
 .app-stack .app-text { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0 clamp(32px, 5vw, 72px); align-items: end; }
 .app-stack .app-meta .facts { margin-top: 0; }
 .app-stack .app-shot { border-top: 1px solid var(--line); padding: var(--pad) var(--pad) 0; }
-.app-stack .app-shot video { border-radius: 12px 12px 0 0; aspect-ratio: 16 / 10; object-fit: cover; background: var(--bg); }
-.app-stack .app-shot figcaption { order: 2; }
+.app-stack .app-shot .ui-wrap { border-radius: 12px 12px 0 0; }
+/* terminal selebar panel: lebih pendek supaya tidak jadi dinding kosong (di layar sempit tingginya ikut isi) */
+@container (min-width: 561px) { .app-stack .ui-terminal { aspect-ratio: 21 / 8; } }
 
 /* media (Langit Jakarta): gambar lebar dulu, lalu teks dua kolom */
 .app-media { grid-template-columns: minmax(0, 1fr); }
@@ -576,10 +575,7 @@ video { display: block; }
 }
 @media (max-width: 560px) {
   .app-stack .app-shot, .app-media .app-shot { padding: 20px 0 0 20px; }
-  .app-stack .app-shot video, .app-media .app-shot img { border-right: 0; border-radius: 12px 0 0 0; }
-  /* rekaman 1280px terlalu kecil di HP: potong ke area utama (tanpa sidebar), lebih tinggi */
-  .app-stack .app-shot video { aspect-ratio: 4 / 5; object-position: 39% 0; }
-  .app-stack .app-shot figcaption { padding-right: 20px; }
+  .app-stack .app-shot .ui-wrap, .app-media .app-shot img { border-right: 0; border-radius: 12px 0 0 0; }
 }
 
 /* ===== 404 ===== */
