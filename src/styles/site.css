@@ -109,7 +109,10 @@ main, header, footer { transition: opacity 0.17s ease; }
 }
 
 * { box-sizing: border-box; margin: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; background: var(--bg); }
+/* jarak di bawah navbar saat melompat ke bagian. Sengaja bukan scroll-padding di html:
+   itu membuat fokus keyboard di navbar sticky menggulir halaman ke paling atas. */
+main [id] { scroll-margin-top: 84px; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; background: var(--bg); }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -574,6 +577,8 @@ video { display: block; }
 @media (max-width: 560px) {
   .app-stack .app-shot, .app-media .app-shot { padding: 20px 0 0 20px; }
   .app-stack .app-shot video, .app-media .app-shot img { border-right: 0; border-radius: 12px 0 0 0; }
+  /* rekaman 1280px terlalu kecil di HP: potong ke area utama (tanpa sidebar), lebih tinggi */
+  .app-stack .app-shot video { aspect-ratio: 4 / 5; object-position: 39% 0; }
   .app-stack .app-shot figcaption { padding-right: 20px; }
 }
 
