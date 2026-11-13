@@ -1,0 +1,53 @@
+---
+// Halaman 404. Caddy menyajikannya untuk setiap alamat yang tidak ada (handle_errors -> /404.html).
+// Bahasa pengunjung belum diketahui, jadi teks ID dan EN tampil berdampingan.
+import '../styles/site.css';
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 · Louvre</title>
+    <meta name="robots" content="noindex" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/img/favicon.ico" sizes="any" />
+    <link rel="icon" href="/img/symbol-ink.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+    <link rel="icon" href="/img/symbol-white.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href="/fonts/HankenGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement, s = null;
+        try { s = localStorage.getItem('louvre-theme'); } catch (e) {}
+        if (s !== 'light' && s !== 'dark') s = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        d.dataset.theme = s;
+        d.classList.add('js');
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap top-in">
+        <a href="/" class="mark" aria-label="Louvre">
+          <img class="only-dark" src="/img/lockup-white.svg" alt="Louvre" height="24" />
+          <img class="only-light" src="/img/lockup-ink.svg" alt="Louvre" height="24" />
+        </a>
+      </div>
+    </header>
+    <main class="hero-zone nf">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <section class="hero wrap" aria-labelledby="nf-h">
+        <p class="nf-code up" style="--i:0" aria-hidden="true">404</p>
+        <h1 id="nf-h" class="up" style="--i:1">Halaman tidak ditemukan.</h1>
+        <p class="lead up" style="--i:2">Alamat ini tidak ada di Louvre. Mungkin salah ketik, atau halamannya sudah pindah.</p>
+        <p class="lead nf-en up" style="--i:3" lang="en">Page not found. This address does not exist on Louvre; it may be a typo, or the page has moved.</p>
+        <div class="actions up" style="--i:4">
+          <a class="btn" href="/id/">Ke beranda</a>
+          <a class="btn btn-ghost" href="/" lang="en">Go to the home page</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

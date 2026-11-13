@@ -37,7 +37,30 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
     <meta property="og:url" content={site + t.path} />
     <meta property="og:locale" content={lang === 'id' ? 'id_ID' : 'en_US'} />
     <meta property="og:image" content={site + '/img/og-image-v3.png'} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.ogAlt} />
+    <meta property="og:site_name" content="Louvre" />
+    <meta property="og:locale:alternate" content={lang === 'id' ? 'en_US' : 'id_ID'} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.title} />
+    <meta name="twitter:description" content={t.description} />
+    <meta name="twitter:image" content={site + '/img/og-image-v3.png'} />
+    <meta name="twitter:image:alt" content={t.ogAlt} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'WebSite', '@id': site + '/#site', name: 'Louvre', url: site + t.path, inLanguage: lang, description: t.description },
+        {
+          '@type': 'ItemList', name: t.collection, itemListElement: apps.map((a, i) => ({
+            '@type': 'ListItem', position: i + 1,
+            item: { '@type': 'WebApplication', name: a.name, url: a.url, description: a.tagline[lang], applicationCategory: 'WebApplication', operatingSystem: 'Web' },
+          })),
+        },
+      ],
+    })} />
     <script is:inline>
       // Tema diset sebelum render pertama supaya tidak berkedip.
       (function () {
@@ -118,30 +141,44 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           <h2 id="koleksi-h">{t.collection}</h2>
         </div>
 
-        {apps.map((a, i) => (
-          <article id={a.id} class={`app spot ${i % 2 ? 'flip' : ''}`} aria-labelledby={`a-${a.id}`}>
+        {apps.map((a) => (
+          <article id={a.id} class={`app spot app-${a.layout}`} aria-labelledby={`a-${a.id}`}>
             <div class="app-text">
-              <span class={`app-icon rv ic-${a.icon}`} aria-hidden="true">
-                <AppIcon icon={a.icon} />
-              </span>
-              <h3 id={`a-${a.id}`} class="rv">{a.name}</h3>
-              <p class="app-tag rv">{a.tagline[lang]}</p>
-              <p class="app-body rv">{a.body[lang]}</p>
-              <dl class="facts rv">
-                <div><dt>{t.access}</dt><dd><span class={`dot ${a.access === 'public' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'public' ? t.public : t.login}</dd></div>
-                <div><dt>{t.stack}</dt><dd>{a.stack}</dd></div>
-              </dl>
-              {a.access === 'login' ? (
-                <div class="more-row rv">
-                  <a class="more" href={a.url}>{t.signIn} {a.host} <span aria-hidden="true">→</span></a>
-                  <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>{t.ownerOnly}</span>
-                </div>
-              ) : (
-                <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
-              )}
+              <div class="app-intro">
+                <span class={`app-icon rv ic-${a.icon}`} aria-hidden="true">
+                  <AppIcon icon={a.icon} />
+                </span>
+                <h3 id={`a-${a.id}`} class="rv">{a.name}</h3>
+                <p class="app-tag rv">{a.tagline[lang]}</p>
+                <p class="app-body rv">{a.body[lang]}</p>
+              </div>
+              <div class="app-meta">
+                <dl class="facts rv">
+                  <div><dt>{t.access}</dt><dd><span class={`dot ${a.access === 'public' ? 'pub' : 'priv'}`} aria-hidden="true"></span>{a.access === 'public' ? t.public : t.login}</dd></div>
+                  <div><dt>{t.stack}</dt><dd>{a.stack}</dd></div>
+                </dl>
+                {a.access === 'login' ? (
+                  <div class="more-row rv">
+                    <a class="more" href={a.url}>{t.signIn} {a.host} <span aria-hidden="true">→</span></a>
+                    <span class="badge"><svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>{t.ownerOnly}</span>
+                  </div>
+                ) : (
+                  <a class="more rv" href={a.url}>{t.open} {a.host} <span aria-hidden="true">→</span></a>
+                )}
+              </div>
             </div>
-            <figure class={`app-shot rv ${a.image ? '' : 'has-mock'}`}>
-              {a.image ? (
+            <figure class={`app-shot rv ${a.video ? 'has-video' : a.image ? '' : 'has-mock'}`}>
+              {a.video ? (
+                <>
+                  {(['dark', 'light'] as const).map((th) => (
+                    <video class={`only-${th}`} data-auto muted loop playsinline preload="none" poster={a.video!.src[th].poster} width={a.video!.width} height={a.video!.height} aria-label={a.video!.alt[lang]}>
+                      <source src={a.video!.src[th].webm} type="video/webm" />
+                      <source src={a.video!.src[th].mp4} type="video/mp4" />
+                    </video>
+                  ))}
+                  <figcaption>{t.recorded}</figcaption>
+                </>
+              ) : a.image ? (
                 <>
                   <img class="only-dark" src={a.image.src[lang].dark} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
                   <img class="only-light" src={a.image.src[lang].light} alt={a.image.alt[lang]} width={a.image.width} height={a.image.height} loading="lazy" decoding="async" />
@@ -245,6 +282,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           if (top) top.classList.toggle('scrolled', window.scrollY > 8);
           var tt = document.querySelector('.totop');
           if (tt) tt.classList.toggle('on', window.scrollY > window.innerHeight * 0.7);
+          syncVideos();
           var w = document.querySelector('[data-tilt]');
           if (!w || reduce) return;
           var r = w.getBoundingClientRect();
@@ -300,18 +338,24 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             });
             if (push) history.pushState(null, '', url);
             // Teks EN/ID beda panjang: kunci ke bagian yang sedang dilihat, bukan ke angka scroll.
-            var a = anchor && document.getElementById(anchor.id);
+            var a = anchor && document.querySelectorAll(ANCHORS)[anchor.idx];
             var top = a ? window.scrollY + a.getBoundingClientRect().top - anchor.off : y;
             window.scrollTo({ top: top, behavior: 'instant' });
             syncScroll();
             initLive();
+            initVideos();
         }
 
+        // Titik acuan saat ganti bahasa: blok yang paling dekat ke 30% tinggi layar (yang sedang dibaca).
+        // Struktur halaman ID dan EN sama, jadi blok dicocokkan lewat urutannya.
+        var ANCHORS = 'main h1, main h2, main h3, main p, main figure, main li, main dl, main .window, main .strip-item, main .actions';
         function currentAnchor() {
-          var best = null;
-          document.querySelectorAll('main [id]').forEach(function (e) {
-            var t = e.getBoundingClientRect().top;
-            if (t <= window.innerHeight * 0.4 && (!best || t > best.off)) best = { id: e.id, off: t };
+          var best = null, target = window.innerHeight * 0.3;
+          document.querySelectorAll(ANCHORS).forEach(function (e, i) {
+            var r = e.getBoundingClientRect();
+            if (r.bottom <= 0 || r.top >= window.innerHeight || !r.height) return;
+            var dist = Math.abs(r.top - target);
+            if (!best || dist < best.dist) best = { idx: i, off: r.top, dist: dist };
           });
           return best;
         }
@@ -323,6 +367,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
             smooth('theme', function () {
               d.dataset.theme = n;
               try { localStorage.setItem('louvre-theme', n); } catch (e) {}
+              setTimeout(syncVideos, 60);
             });
             return;
           }
@@ -370,6 +415,27 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
           }, { threshold: 0.2 });
           uis.forEach(function (u) { liveIO.observe(u); });
         }
+
+        // Rekaman Pulse: hanya video yang tampil (sesuai tema) dan ada di layar yang diputar.
+        function syncVideos() {
+          if (reduce) return;
+          document.querySelectorAll('video[data-auto]').forEach(function (v) {
+            var r = v.getBoundingClientRect();
+            var show = v.offsetParent !== null && !document.hidden && r.bottom > 0 && r.top < window.innerHeight;
+            if (show) {
+              if (v.preload !== 'auto') v.preload = 'auto';
+              if (v.paused) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+            } else if (!v.paused) v.pause();
+          });
+        }
+        function initVideos() {
+          if (reduce) {
+            document.querySelectorAll('video[data-auto]').forEach(function (v) { v.controls = true; v.removeAttribute('data-auto'); });
+            return;
+          }
+          syncVideos();
+        }
+        document.addEventListener('visibilitychange', syncVideos);
 
         var plot = new WeakMap(), tick = 0;
         function draw(g, ys, dx) {
@@ -466,6 +532,7 @@ const ideaUrl = 'https://github.com/bahawww/louvre-site/issues/new';
 
         if (location.hash) history.replaceState(null, '', location.pathname + location.search);
         initLive();
+        initVideos();
         observeRv();
         if (savedY !== null) {
           window.scrollTo({ top: parseFloat(savedY) || 0, behavior: 'instant' });
