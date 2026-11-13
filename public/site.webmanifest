@@ -1,0 +1,13 @@
+{
+  "name": "Louvre",
+  "short_name": "Louvre",
+  "description": "Workspace Bahar: Pulse, Logo, Langit Jakarta.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#08080a",
+  "theme_color": "#08080a",
+  "icons": [
+    { "src": "/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/img/symbol-white.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

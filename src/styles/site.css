@@ -584,3 +584,19 @@ html.js .rv.in { opacity: 1; transform: none; }
 .nf-code { font-size: var(--fs-display); font-weight: 600; letter-spacing: -0.05em; line-height: 1; color: var(--dim); margin-bottom: 20px; font-variant-numeric: tabular-nums; }
 .nf h1 { font-size: var(--fs-h2); }
 .nf-en { margin-top: 10px; color: var(--dim); }
+
+/* ===== tentang (portofolio) ===== */
+.about { padding-top: var(--gap-section); display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px clamp(40px, 6vw, 96px); align-items: start; }
+.about h2 { font-size: var(--fs-h2); }
+.about-lead { margin-top: 24px; font-size: var(--fs-lead); line-height: 1.55; max-width: 34em; text-wrap: pretty; }
+.about-contact { margin-top: 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.about-contact .foot-h { margin-bottom: 0; }
+.about-contact p:not(.foot-h) { color: var(--soft); font-size: var(--fs-sm); margin-bottom: 12px; }
+.about-side { padding-top: 12px; }
+.skills > div { padding: 16px 0; border-top: 1px solid var(--line); }
+.skills > div:last-child { border-bottom: 1px solid var(--line); }
+.skills dt { font-size: var(--fs-xs); color: var(--dim); }
+.skills dd { margin: 4px 0 0; }
+.facts dd a { text-decoration: underline; text-decoration-color: var(--line-3); text-underline-offset: 3px; transition: text-decoration-color 0.2s; }
+.facts dd a:hover { text-decoration-color: currentColor; }
+@media (max-width: 860px) { .about { grid-template-columns: minmax(0, 1fr); } .about-side { padding-top: 0; } }

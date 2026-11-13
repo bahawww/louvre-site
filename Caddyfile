@@ -17,6 +17,10 @@
 		-Server
 	}
 
+	# Pengunjung lewat http:// (Cloudflare meneruskan skema asli di Cf-Visitor) -> paksa https.
+	@insecure header Cf-Visitor *"scheme":"http"*
+	redir @insecure https://{host}{uri} 308
+
 	# Pulse pindah ke subdomain sendiri. Jalur API lama diarahkan ke sana.
 	redir /api/* https://pulse.louvre.my.id{uri} 308
 

@@ -17,6 +17,8 @@ export type App = {
   mock?: 'pulse-terminal';
   // Komposisi panel: 'stack' (teks lalu gambar lebar), 'split' (teks | gambar), 'media' (gambar lebar lalu teks).
   layout: 'stack' | 'split' | 'media';
+  // Repo publik di github.com/bahawww. Tanpa `repo` = kode privat.
+  repo?: string;
   caps: { title: T; text: T }[];
 };
 
@@ -54,6 +56,7 @@ export const apps: App[] = [
   {
     id: 'logo',
     layout: 'split',
+    repo: 'louvre-logo',
     name: 'Logo',
     stack: 'HTML · CSS',
     url: 'https://logo.louvre.my.id/',
@@ -95,6 +98,7 @@ export const apps: App[] = [
   {
     id: 'udara',
     layout: 'media',
+    repo: 'langit-jakarta-ispu',
     name: 'Langit Jakarta',
     stack: 'Next.js · FastAPI',
     url: 'https://udara.louvre.my.id/',
