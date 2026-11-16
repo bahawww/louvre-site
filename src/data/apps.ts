@@ -154,8 +154,8 @@ export const apps: App[] = [
     },
     image: {
       src: {
-        id: { dark: '/img/shot-sport-v5-dark.webp', light: '/img/shot-sport-v5-light.webp' },
-        en: { dark: '/img/shot-sport-v5-dark.webp', light: '/img/shot-sport-v5-light.webp' },
+        id: { dark: '/img/shot-sport-v7-dark.webp', light: '/img/shot-sport-v7-light.webp' },
+        en: { dark: '/img/shot-sport-v7-dark.webp', light: '/img/shot-sport-v7-light.webp' },
       },
       width: 1440,
       height: 900,
