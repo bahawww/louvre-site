@@ -1,12 +1,14 @@
 ---
 // Ikon app di kartu koleksi dan strip hero. Mengikuti tema lewat var CSS.
-interface Props { icon: 'pulse' | 'louvre' | 'ispu' }
+interface Props { icon: 'pulse' | 'louvre' | 'ispu' | 'sport' }
 const { icon } = Astro.props;
 ---
 {icon === 'pulse' ? (
   <svg class="pl" viewBox="0 0 64 64"><rect class="pl-bg" width="64" height="64" rx="14" /><path class="pl-wave" d="M9 34h10l6-18 9 30 6-12h15" /></svg>
 ) : icon === 'ispu' ? (
   <svg class="tugu" viewBox="3 2 26 28"><path class="tugu-flame" d="M13 15 C13 11 15 10 16 7 C16.5 9 18 10 17.6 6 C19.6 9 19.5 12 19 15 Z" /><path class="tugu-body" d="M13.5 15h5l-.6 1.5h-3.8z M14.6 16.5h2.8l.8 9.5H13.8z M10 26h12l2 3H8z" /></svg>
+) : icon === 'sport' ? (
+  <svg class="sp" viewBox="0 0 24 24" fill="none"><rect class="sp-box" x="2.5" y="4.5" width="19" height="15" rx="2" /><path class="sp-line" d="M12 4.5v15M2.5 8.5h3.2v7H2.5M21.5 8.5h-3.2v7h3.2" /><circle class="sp-ring" cx="12" cy="12" r="2.7" /><circle class="sp-dot" cx="12" cy="12" r="1.2" /></svg>
 ) : (
   <>
     <img class="only-dark" src="/img/symbol-white.svg" alt="" width="24" height="24" />

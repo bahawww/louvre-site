@@ -11,7 +11,7 @@ export type App = {
   access: 'public' | 'login';
   tagline: T;
   body: T;
-  icon: 'pulse' | 'louvre' | 'ispu';
+  icon: 'pulse' | 'louvre' | 'ispu' | 'sport';
   // Gambar panel per bahasa dan tema. Tanpa `image`, panel memakai tampilan contoh (`mock`).
   image?: { src: Record<Lang, { dark: string; light: string }>; width: number; height: number; alt: T };
   mock?: 'pulse-terminal';
@@ -134,6 +134,48 @@ export const apps: App[] = [
       {
         title: { id: 'Simulator', en: 'Simulator' },
         text: { id: 'Ubah nilai polutan, lihat kategori ISPU yang ditebak model.', en: 'Change pollutant values and see the ISPU category each model predicts.' },
+      },
+    ],
+  },
+  {
+    id: 'sport',
+    layout: 'split',
+    repo: 'sport-louvre',
+    name: 'Sport Louvre',
+    stack: 'Next.js · FastAPI',
+    url: 'https://sport.louvre.my.id/',
+    host: 'sport.louvre.my.id',
+    access: 'public',
+    icon: 'sport',
+    tagline: { id: 'Analisis nilai pasar pemain sepak bola', en: 'Football player market value analysis' },
+    body: {
+      id: 'Dasbor 2.418 pemain dari lima liga top Eropa dengan 47.903 catatan nilai pasar Transfermarkt sejak 2004. Membandingkan Decision Tree, Regresi Linear, dan model lain melawan tebakan tanpa model.',
+      en: 'A dashboard of 2,418 players from Europe’s top five leagues with 47,903 Transfermarkt market value records since 2004. It compares Decision Tree, Linear Regression, and other models against no-model baselines. The site is in Indonesian.',
+    },
+    image: {
+      src: {
+        id: { dark: '/img/shot-sport-v5-dark.webp', light: '/img/shot-sport-v5-light.webp' },
+        en: { dark: '/img/shot-sport-v5-dark.webp', light: '/img/shot-sport-v5-light.webp' },
+      },
+      width: 1440,
+      height: 900,
+      alt: {
+        id: 'Halaman Arena di sport.louvre.my.id: ringkasan akurasi model, perbandingan model, dan ilustrasi kebocoran data',
+        en: 'The Arena page on sport.louvre.my.id: model accuracy summary, model comparison, and a data leakage illustration',
+      },
+    },
+    caps: [
+      {
+        title: { id: 'Arena & diagnostik', en: 'Arena & diagnostics' },
+        text: { id: 'Diuji pada 484 pemain (20%) yang tidak pernah dilihat saat melatih, lengkap dengan confusion matrix dan contoh kebocoran data.', en: 'Tested on 484 held-out players (20%), complete with a confusion matrix and data leakage examples.' },
+      },
+      {
+        title: { id: 'Simulator & tren karir', en: 'Simulator & career trends' },
+        text: { id: 'Lihat riwayat nilai pasar tiap pemain, lalu simulasikan prediksi harga dan tren pada pembaruan berikutnya.', en: 'Inspect each player’s market value history, then simulate price and trend predictions for the next update.' },
+      },
+      {
+        title: { id: 'Rekomendasi 12 bulan', en: '12-month recommendations' },
+        text: { id: 'Proyeksi setahun ke depan untuk kandidat beli dan risiko turun: 83% perkiraan naik terbukti benar.', en: 'One-year projections for buy candidates and drop risks: 83% of predicted rises proved right.' },
       },
     ],
   },
